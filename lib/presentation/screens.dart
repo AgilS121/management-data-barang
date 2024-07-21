@@ -1,3 +1,6 @@
+export 'package:dekaybaro/presentation/adminpage/datakaryawan/datakaryawan.screen.dart';
+export 'package:dekaybaro/presentation/adminpage/datakayu/datakayu.screen.dart';
+export 'package:dekaybaro/presentation/adminpage/homeadmin/homeadmin.screen.dart';
 export 'package:dekaybaro/presentation/customerpage/addalamat/addalamat.screen.dart';
 export 'package:dekaybaro/presentation/customerpage/akun/akun.screen.dart';
 export 'package:dekaybaro/presentation/customerpage/belanja/belanja.screen.dart';
@@ -7,6 +10,7 @@ export 'package:dekaybaro/presentation/customerpage/keranjang/keranjang.screen.d
 export 'package:dekaybaro/presentation/customerpage/konfirmasipembayaran/konfirmasipembayaran.screen.dart';
 export 'package:dekaybaro/presentation/customerpage/pembayaran/pembayaran.screen.dart';
 export 'package:dekaybaro/presentation/customerpage/pengaturancustomer/pengaturancustomer.screen.dart';
+export 'package:dekaybaro/presentation/customerpage/productdetail/productdetail.screen.dart';
 export 'package:dekaybaro/presentation/customerpage/semuaProduct/semua_product.screen.dart';
 export 'package:dekaybaro/presentation/home/home.screen.dart';
 export 'package:dekaybaro/presentation/login/login.screen.dart';
@@ -15,4 +19,3 @@ export 'package:dekaybaro/presentation/onboarding/onboarding.screen.dart';
 export 'package:dekaybaro/presentation/register/register.screen.dart';
 export 'package:dekaybaro/presentation/resetpassword/resetpassword.screen.dart';
 export 'package:dekaybaro/presentation/tentangaplikasi/tentangaplikasi.screen.dart';
-export 'package:dekaybaro/presentation/customerpage/productdetail/productdetail.screen.dart';
