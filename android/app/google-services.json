@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1063875415766",
+    "project_id": "dekaybaro",
+    "storage_bucket": "dekaybaro.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063875415766:android:eb0e78a6194a9744f60377",
+        "android_client_info": {
+          "package_name": "com.dekaybaro.app.dekaybaro"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAX6YFDiNjgdqfGlb3eVBRcy74qU_vmgnY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

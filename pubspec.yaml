@@ -1,0 +1,36 @@
+name: dekaybaro
+version: 1.0.0+1
+publish_to: none
+description: A new Flutter project.
+environment:
+  sdk: '>=3.4.3 <4.0.0'
+
+dependencies:
+  cupertino_icons: ^1.0.6
+  firebase_core: ^3.2.0
+  flutter:
+    sdk: flutter
+  flutter_screenutil: ^5.9.3
+  get: 4.6.6
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_lints: 4.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/
+
+  fonts:
+    - family: Sansation
+      fonts:
+        - asset: assets/fonts/Sansation_Bold_Italic.ttf
+        - asset: assets/fonts/Sansation_Bold.ttf
+        - asset: assets/fonts/Sansation_Italic.ttf
+        - asset: assets/fonts/Sansation_Light_Italic.ttf
+        - asset: assets/fonts/Sansation_Light.ttf
+        - asset: assets/fonts/Sansation_Regular.ttf
+          weight: 700
