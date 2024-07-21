@@ -1,8 +1,11 @@
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/addalamat.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/akun.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/belanja.controller.binding.dart'; 
+export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/datakaryawan.controller.binding.dart'; 
+export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/datakayu.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/detailproduk.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/home.controller.binding.dart';
+export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/homeadmin.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/homecustomer.controller.binding.dart';
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/keranjang.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/konfirmasipembayaran.controller.binding.dart'; 

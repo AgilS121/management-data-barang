@@ -4,7 +4,7 @@ import 'package:dekaybaro/presentation/utils/componentcustomers/views/category_t
 import 'package:dekaybaro/presentation/utils/componentcustomers/views/custom_bottom_nav_bar_view.dart';
 import 'package:dekaybaro/presentation/utils/componentcustomers/views/product_card_view.dart';
 import 'package:dekaybaro/presentation/utils/componentcustomers/views/search_bar_view.dart';
-import 'package:dekaybaro/presentation/utils/componentcustomers/views/welcome_header_view.dart';
+import 'package:dekaybaro/presentation/utils/views/welcome_header_view.dart';
 import 'package:dekaybaro/presentation/utils/views/reusable_text_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

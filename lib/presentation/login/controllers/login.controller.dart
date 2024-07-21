@@ -16,7 +16,7 @@ class LoginController extends GetxController {
   void validateForm() {
     if (formKey.currentState?.validate() ?? false) {
       Get.snackbar('Success', 'Form is valid');
-      Get.toNamed("/homecustomer");
+      Get.toNamed("/homeadmin");
     } else {
       Get.defaultDialog(
         title: 'Invalid Input',

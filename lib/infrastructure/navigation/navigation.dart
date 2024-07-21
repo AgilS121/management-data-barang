@@ -121,5 +121,20 @@ class Nav {
       page: () => const ProductdetailScreen(),
       binding: ProductdetailControllerBinding(),
     ),
+    GetPage(
+      name: Routes.HOMEADMIN,
+      page: () => const HomeadminScreen(),
+      binding: HomeadminControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.DATAKARYAWAN,
+      page: () => const DatakaryawanScreen(),
+      binding: DatakaryawanControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.DATAKAYU,
+      page: () => const DatakayuScreen(),
+      binding: DatakayuControllerBinding(),
+    ),
   ];
 }
