@@ -1,23 +1,24 @@
+import 'package:dekaybaro/domain/models/KaryawanModel.dart';
 import 'package:get/get.dart';
 
 class DatakaryawanController extends GetxController {
-  //TODO: Implement DatakaryawanController
+  final RxList<KaryawanModel> karyawanitems = <KaryawanModel>[].obs;
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    // Contoh data
+    karyawanitems.addAll([
+      KaryawanModel(
+        id: 1,
+        name: 'Jack',
+        email: 'jack@gmail.com',
+        phone: '089665881651',
+        position: 'Karyawan Tetap',
+        status: 'Aktif',
+        image:
+            'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png',
+      ),
+    ]);
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

@@ -15,6 +15,7 @@ export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/onboard
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/pembayaran.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/pengaturancustomer.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/productdetail.controller.binding.dart'; 
+export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/profiladmin.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/register.controller.binding.dart';
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/resetpassword.controller.binding.dart';
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/semua_product.controller.binding.dart'; 

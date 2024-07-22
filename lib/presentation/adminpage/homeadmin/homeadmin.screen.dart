@@ -1,5 +1,6 @@
 import 'package:dekaybaro/infrastructure/theme/colors.dart';
 import 'package:dekaybaro/presentation/utils/componentadmins/views/custom_bottom_navbar_admin_view.dart';
+import 'package:dekaybaro/presentation/utils/componentadmins/views/stock_product_card_view.dart';
 import 'package:dekaybaro/presentation/utils/views/reusable_text_view.dart';
 import 'package:dekaybaro/presentation/utils/views/welcome_header_view.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +30,32 @@ class HomeadminScreen extends GetView<HomeadminController> {
                 ),
               ),
             ),
-            // Expanded(
-            //   child: ProductGrid(),
-            // ),
+            Expanded(
+              child: ProductGridAdmin(),
+            ),
           ],
         ),
       ),
       bottomNavigationBar: CustomBottomNavbarAdminView(),
     );
+  }
+}
+
+class ProductGridAdmin extends GetView<HomeadminController> {
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() => GridView.builder(
+          padding: EdgeInsets.all(16.0),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            childAspectRatio: 0.75,
+            crossAxisSpacing: 16.0,
+            mainAxisSpacing: 16.0,
+          ),
+          itemCount: controller.products.length,
+          itemBuilder: (context, index) {
+            return StockProductCardView(product: controller.products[index]);
+          },
+        ));
   }
 }
