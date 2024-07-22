@@ -136,5 +136,10 @@ class Nav {
       page: () => const DatakayuScreen(),
       binding: DatakayuControllerBinding(),
     ),
+    GetPage(
+      name: Routes.PROFILADMIN,
+      page: () => const ProfiladminScreen(),
+      binding: ProfiladminControllerBinding(),
+    ),
   ];
 }

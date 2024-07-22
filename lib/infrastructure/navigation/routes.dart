@@ -9,6 +9,7 @@ class Routes {
   static const BELANJA = '/belanja';
   static const CUSTOMDIVIDER = '/customdivider';
   static const DATAKARYAWAN = '/datakaryawan';
+  static const DATAKAYU = '/datakayu';
   static const DETAILPRODUK = '/detailproduk';
   static const HOME = '/home';
   static const HOMEADMIN = '/homeadmin';
@@ -25,5 +26,5 @@ class Routes {
   static const RESETPASSWORD = '/resetpassword';
   static const SEMUA_PRODUCT = '/semua-product';
   static const TENTANGAPLIKASI = '/tentangaplikasi';
-  static const DATAKAYU = '/datakayu';
+  static const PROFILADMIN = '/profiladmin';
 }

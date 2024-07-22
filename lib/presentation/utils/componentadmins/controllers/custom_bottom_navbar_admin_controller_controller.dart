@@ -16,7 +16,7 @@ class CustomBottomNavbarAdminControllerController extends GetxController {
         Get.toNamed('/datakayu');
         break;
       case 3:
-        Get.toNamed('/akunadmin');
+        Get.toNamed('/profiladmin');
         break;
     }
   }
