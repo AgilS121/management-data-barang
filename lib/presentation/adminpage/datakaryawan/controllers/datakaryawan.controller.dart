@@ -16,6 +16,7 @@ class DatakaryawanController extends GetxController {
         phone: '089665881651',
         position: 'Karyawan Tetap',
         status: 'Aktif',
+        salary: '500000',
         image:
             'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png',
       ),

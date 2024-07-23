@@ -141,5 +141,10 @@ class Nav {
       page: () => const ProfiladminScreen(),
       binding: ProfiladminControllerBinding(),
     ),
+    GetPage(
+      name: Routes.PENDAPATAN,
+      page: () => const PendapatanScreen(),
+      binding: PendapatanControllerBinding(),
+    ),
   ];
 }

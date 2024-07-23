@@ -1,6 +1,7 @@
 export 'package:dekaybaro/presentation/adminpage/datakaryawan/datakaryawan.screen.dart';
 export 'package:dekaybaro/presentation/adminpage/datakayu/datakayu.screen.dart';
 export 'package:dekaybaro/presentation/adminpage/homeadmin/homeadmin.screen.dart';
+export 'package:dekaybaro/presentation/adminpage/pendapatan/pendapatan.screen.dart';
 export 'package:dekaybaro/presentation/adminpage/profiladmin/profiladmin.screen.dart';
 export 'package:dekaybaro/presentation/customerpage/addalamat/addalamat.screen.dart';
 export 'package:dekaybaro/presentation/customerpage/akun/akun.screen.dart';
