@@ -13,6 +13,7 @@ export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/login.c
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/lupasandi.controller.binding.dart';
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/onboarding.controller.binding.dart';
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/pembayaran.controller.binding.dart'; 
+export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/pendapatan.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/pengaturancustomer.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/productdetail.controller.binding.dart'; 
 export 'package:dekaybaro/infrastructure/navigation/bindings/controllers/profiladmin.controller.binding.dart'; 

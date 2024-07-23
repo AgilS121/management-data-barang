@@ -58,6 +58,13 @@ class ProfiladminScreen extends GetView<ProfiladminController> {
             ),
             SizedBox(height: 20),
             ListTile(
+              leading: Icon(Icons.attach_money_rounded),
+              title: Text('Pendapatan'),
+              onTap: () {
+                Get.toNamed("/pendapatan");
+              },
+            ),
+            ListTile(
               leading: Icon(Icons.settings),
               title: Text('Pengaturan'),
               onTap: () {

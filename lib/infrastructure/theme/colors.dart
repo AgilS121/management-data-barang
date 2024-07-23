@@ -26,4 +26,6 @@ class AppColors {
 
   // tabs inactive
   static const Color tabsinactive = Color(0xffEDECEC);
+
+  static const Color greeen1 = Color(0xff008A1C);
 }

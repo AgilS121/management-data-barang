@@ -1,4 +1,5 @@
 import 'package:dekaybaro/infrastructure/theme/colors.dart';
+import 'package:dekaybaro/presentation/adminpage/datakayu/views/addkayu_view.dart';
 import 'package:dekaybaro/presentation/utils/componentadmins/views/card_kayu_view.dart';
 import 'package:dekaybaro/presentation/utils/componentadmins/views/custom_bottom_navbar_admin_view.dart';
 import 'package:dekaybaro/presentation/utils/views/reusable_button_view.dart';
@@ -41,10 +42,13 @@ class DatakayuScreen extends GetView<DatakayuController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Logika ketika tombol ditekan
+          Get.to(() => AddkayuView());
         },
-        backgroundColor: AppColors.coklat7,
-        child: Icon(Icons.add),
+        backgroundColor: AppColors.whiteColor,
+        child: Icon(
+          Icons.add,
+          color: AppColors.coklat7,
+        ),
       ),
       bottomNavigationBar: CustomBottomNavbarAdminView(),
     );
