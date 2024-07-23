@@ -22,9 +22,10 @@ class Routes {
   static const PEMBAYARAN = '/pembayaran';
   static const PENGATURANCUSTOMER = '/pengaturancustomer';
   static const PRODUCTDETAIL = '/productdetail';
+  static const PROFILADMIN = '/profiladmin';
   static const REGISTER = '/register';
   static const RESETPASSWORD = '/resetpassword';
   static const SEMUA_PRODUCT = '/semua-product';
   static const TENTANGAPLIKASI = '/tentangaplikasi';
-  static const PROFILADMIN = '/profiladmin';
+  static const PENDAPATAN = '/pendapatan';
 }

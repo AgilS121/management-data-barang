@@ -6,6 +6,8 @@ class KaryawanModel {
   final String email;
   final String phone;
   final String image;
+  final String salary;
+  final String? bio;
 
   KaryawanModel(
       {required this.id,
@@ -14,7 +16,9 @@ class KaryawanModel {
       required this.status,
       required this.email,
       required this.phone,
-      required this.image});
+      required this.image,
+      required this.salary,
+      this.bio});
 
   // Factory constructor to create an KaryawanModel from a JSON map
   factory KaryawanModel.fromJson(Map<String, dynamic> json) {
@@ -25,7 +29,9 @@ class KaryawanModel {
         status: json['status'],
         email: json['email'],
         phone: json['phone'],
-        image: json['image']);
+        image: json['image'],
+        salary: json['salary'],
+        bio: json['bio']);
   }
 
   // Method to convert an KaryawanModel instance to a JSON map
@@ -37,7 +43,9 @@ class KaryawanModel {
       'status': status,
       'email': email,
       'phone': phone,
-      'image': image
+      'image': image,
+      'salary': salary,
+      'bio': bio
     };
   }
 }
