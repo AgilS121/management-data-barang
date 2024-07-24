@@ -1,3 +1,5 @@
+import 'package:dekaybaro/domain/entities/UserEntitites.dart';
+import 'package:dekaybaro/domain/usecase/RegisterEmail.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -14,37 +16,15 @@ class RegisterController extends GetxController {
     update();
   }
 
-  void validateForm() {
-    if (formKey.currentState?.validate() ?? false) {
-      Get.snackbar('Success', 'Form is valid');
-    } else {
-      Get.defaultDialog(
-        title: 'Invalid Input',
-        middleText: 'Please fill in all fields correctly.',
-        textConfirm: 'OK',
-        onConfirm: () => Get.back(),
-      );
-    }
-  }
+  final RegisterWithEmail registerWithEmail;
+  var user = Rxn<UserEntity>();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
-  }
+  RegisterController({
+    required this.registerWithEmail,
+  });
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> register(String email, String password) async {
+    user.value = await registerWithEmail.call(email, password);
+    print("data user ${user.value} $email $password");
   }
-
-  @override
-  void onClose() {
-    nameController.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
