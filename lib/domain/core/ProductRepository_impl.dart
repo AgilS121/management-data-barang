@@ -84,19 +84,18 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<Either<Exception, Product>> updateProduct(Product product) async {
     try {
-      // Assume product ID is provided
-      await firestore
+      await FirebaseFirestore.instance
           .collection('products')
-          .doc(product.id.toString())
+          .doc(product.id)
           .update(product.toJson());
       return Right(product);
     } catch (e) {
-      return Left(Exception(e.toString()));
+      return Left(Exception('Error updating product: $e'));
     }
   }
 
   @override
-  Future<Either<Exception, void>> deleteProduct(int id) async {
+  Future<Either<Exception, void>> deleteProduct(String id) async {
     try {
       await firestore.collection('products').doc(id.toString()).delete();
       return Right(null);

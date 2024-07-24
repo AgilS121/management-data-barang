@@ -4,7 +4,6 @@ import 'package:dekaybaro/presentation/adminpage/datakayu/views/detailkayu_view.
 import 'package:dekaybaro/presentation/adminpage/datakayu/views/editkayu_view.dart';
 import 'package:dekaybaro/presentation/utils/views/reusable_text_view.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 class CardKayuView extends GetView {
@@ -14,6 +13,7 @@ class CardKayuView extends GetView {
 
   @override
   Widget build(BuildContext context) {
+    print("data image ${product.image[0]}");
     return GestureDetector(
       onTap: () {
         Get.to(() => DetailkayuView(), arguments: product);
@@ -29,19 +29,44 @@ class CardKayuView extends GetView {
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  color: Colors.lightBlue[50],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Center(
-                  child: Text(
-                    '404',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[800],
-                    ),
-                  ),
-                ),
+                child: product.image.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          product.image[0],
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.lightBlue[50],
+                              child: Center(
+                                child: Text(
+                                  '404',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue[800],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    : Container(
+                        color: Colors.lightBlue[50],
+                        child: Center(
+                          child: Text(
+                            'No Image',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[800],
+                            ),
+                          ),
+                        ),
+                      ),
               ),
               SizedBox(width: 16),
               // Informasi produk
@@ -54,21 +79,31 @@ class CardKayuView extends GetView {
                       sizetext: 20,
                       textcolor: AppColors.blackColor,
                     ),
+                    SizedBox(height: 4),
+                    ReusableTextView(
+                      text: 'Rp ${product.price}',
+                      sizetext: 16,
+                      textcolor: AppColors.greytext,
+                    ),
                   ],
                 ),
               ),
-              // Kontrol jumlah dan hapus
+              // Kontrol jumlah dan edit
               Column(
                 children: [
                   IconButton(
                     icon: Icon(Icons.edit, color: Colors.grey),
                     onPressed: () {
-                      Get.to(() => EditkayuView(), arguments: product);
+                      Get.to(
+                          () => EditkayuView(
+                                product: product,
+                              ),
+                          arguments: product);
                     },
                   ),
                   ReusableTextView(
-                    text: product.stok.toString(),
-                    sizetext: 16,
+                    text: 'Stok: ${product.stok}',
+                    sizetext: 14,
                     textcolor: AppColors.greytext,
                   ),
                 ],

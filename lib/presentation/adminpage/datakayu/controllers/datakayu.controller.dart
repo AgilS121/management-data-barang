@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:dekaybaro/domain/models/ProductModel.dart';
 import 'package:dekaybaro/domain/usecase/ProductUseCase.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -36,6 +35,7 @@ class DatakayuController extends GetxController {
   final isLoading = false.obs;
   final errorMessage = ''.obs;
   final RxList<XFile> imageFiles = <XFile>[].obs;
+  final RxList<String> imageUrls = <String>[].obs;
 
   @override
   void onInit() {
@@ -120,74 +120,68 @@ class DatakayuController extends GetxController {
 
   Future<void> updateExistingProduct(Product product) async {
     isLoading.value = true;
-    final result = await updateProduct(product);
-    result.fold(
-      (exception) {
-        errorMessage.value = exception.toString();
-      },
-      (updatedProduct) {
-        int index = products.indexWhere((p) => p.id == product.id);
-        if (index != -1) {
-          products[index] = updatedProduct;
-        }
-      },
-    );
-    isLoading.value = false;
-  }
 
-  Future<void> deleteProductById(int id) async {
-    isLoading.value = true;
-    final result = await deleteProduct(id);
-    result.fold(
-      (exception) {
-        errorMessage.value = exception.toString();
-      },
-      (_) {
-        products.removeWhere((product) => product.id == id);
-      },
-    );
-    isLoading.value = false;
-  }
+    List<String> updatedImageUrls = [];
 
-  Future<void> pickImages() async {
-    final ImagePicker picker = ImagePicker();
-    final List<XFile>? pickedFiles = await picker.pickMultiImage();
-    if (pickedFiles != null) {
-      imageFiles.addAll(pickedFiles);
-    }
-  }
-
-  Future<String> uploadImageToStorage(XFile file) async {
     try {
-      // Gunakan path absolut
-      File localFile = File(file.path).absolute;
-
-      if (await localFile.exists()) {
-        final Reference storageReference =
-            FirebaseStorage.instance.ref().child('images/${file.name}');
-
-        UploadTask uploadTask = storageReference.putFile(localFile);
-        TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-
-        String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-        return downloadUrl;
+      if (imageFiles.isNotEmpty) {
+        for (var imageFile in imageFiles) {
+          String imageUrl = await uploadImageToStorage(imageFile);
+          updatedImageUrls.add(imageUrl);
+        }
       } else {
-        throw Exception("File tidak ditemukan: ${localFile.path}");
+        updatedImageUrls =
+            imageUrls; // Jika tidak ada gambar baru, gunakan gambar yang ada
       }
+
+      final updatedProduct = product.copyWith(
+        name: nameController.text,
+        deskripsi: descriptionController.text,
+        stok: int.parse(stockController.text),
+        kualitas: qualityController.text,
+        price: int.parse(priceController.text),
+        image: updatedImageUrls,
+      );
+
+      final result = await updateProduct(updatedProduct);
+      result.fold(
+        (exception) {
+          errorMessage.value = exception.toString();
+        },
+        (updatedProduct) {
+          int index = products.indexWhere((p) => p.id == updatedProduct.id);
+          if (index != -1) {
+            products[index] = updatedProduct;
+          }
+        },
+      );
     } catch (e) {
-      print("Error mengunggah gambar: $e");
-      throw e;
+      errorMessage.value = 'Terjadi kesalahan saat mengupdate produk: $e';
+    } finally {
+      isLoading.value = false;
     }
   }
 
-  @override
-  void onClose() {
-    // Dispose the controllers when the controller is disposed
-    nameController.dispose();
-    descriptionController.dispose();
-    stockController.dispose();
-    qualityController.dispose();
-    priceController.dispose();
-    super.onClose();
+  Future<String> uploadImageToStorage(XFile imageFile) async {
+    final fileName = DateTime.now().millisecondsSinceEpoch.toString();
+    final Reference storageRef =
+        FirebaseStorage.instance.ref().child('products/$fileName');
+    final UploadTask uploadTask = storageRef.putFile(File(imageFile.path));
+    final TaskSnapshot downloadUrl = await uploadTask;
+    final String url = await downloadUrl.ref.getDownloadURL();
+    return url;
+  }
+
+  void pickImages() async {
+    final ImagePicker picker = ImagePicker();
+    final List<XFile>? selectedImages = await picker.pickMultiImage();
+
+    if (selectedImages != null) {
+      imageFiles.assignAll(selectedImages);
+    }
+  }
+
+  void toggleFavorite() {
+    isFavorite.value = !isFavorite.value;
   }
 }

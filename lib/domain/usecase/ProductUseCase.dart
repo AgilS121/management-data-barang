@@ -37,7 +37,7 @@ class DeleteProduct {
 
   DeleteProduct(this.repository);
 
-  Future<Either<Exception, void>> call(int id) {
+  Future<Either<Exception, void>> call(String id) {
     return repository.deleteProduct(id);
   }
 }
