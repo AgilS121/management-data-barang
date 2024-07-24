@@ -1,9 +1,23 @@
+import 'package:dekaybaro/domain/entities/UserEntitites.dart';
+import 'package:dekaybaro/domain/usecase/LoginEmail.dart';
+import 'package:dekaybaro/domain/usecase/LoginGoogle.dart';
+import 'package:dekaybaro/domain/usecase/Logout.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class LoginController extends GetxController {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final LoginWithEmail loginWithEmail;
+  final LoginWithGoogle loginWithGoogle;
+  final Logout logout;
+  var user = Rxn<UserEntity>();
+
+  LoginController({
+    required this.loginWithEmail,
+    required this.loginWithGoogle,
+    required this.logout,
+  });
 
   final formKey = GlobalKey<FormState>();
   var obscureText = true.obs;
@@ -13,37 +27,16 @@ class LoginController extends GetxController {
     update();
   }
 
-  void validateForm() {
-    if (formKey.currentState?.validate() ?? false) {
-      Get.snackbar('Success', 'Form is valid');
-      Get.toNamed("/homeadmin");
-    } else {
-      Get.defaultDialog(
-        title: 'Invalid Input',
-        middleText: 'Please fill in all fields correctly.',
-        textConfirm: 'OK',
-        onConfirm: () => Get.back(),
-      );
-    }
+  Future<void> login(String email, String password) async {
+    user.value = await loginWithEmail.call(email, password);
   }
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  Future<void> loginWithGoogleAccount() async {
+    user.value = await loginWithGoogle.call();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  Future<void> signOut() async {
+    await logout.call();
+    user.value = null;
   }
-
-  @override
-  void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

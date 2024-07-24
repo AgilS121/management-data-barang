@@ -115,8 +115,15 @@ class LoginScreen extends GetView<LoginController> {
                       colorbg: AppColors.brownColor,
                       colorfe: AppColors.whiteColor,
                       textcolor: AppColors.whiteColor,
-                      onPressed: () {
-                        controller.validateForm();
+                      onPressed: () async {
+                        try {
+                          await controller.login(
+                              controller.emailController.text,
+                              controller.passwordController.text);
+                          Get.snackbar('Success', 'Logged in successfully');
+                        } catch (e) {
+                          Get.snackbar('Error', e.toString());
+                        }
                       },
                     ),
                     SizedBox(height: 20.h),
@@ -124,7 +131,7 @@ class LoginScreen extends GetView<LoginController> {
                     SizedBox(height: 20.h),
                     GestureDetector(
                       onTap: () {
-                        // Implementasi login dengan Google
+                        controller.loginWithGoogleAccount();
                       },
                       child: Container(
                         padding: EdgeInsets.all(10),

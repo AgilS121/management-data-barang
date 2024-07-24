@@ -116,8 +116,16 @@ class RegisterScreen extends GetView<RegisterController> {
                       colorbg: AppColors.brownColor,
                       colorfe: AppColors.whiteColor,
                       textcolor: AppColors.whiteColor,
-                      onPressed: () {
-                        controller.validateForm();
+                      onPressed: () async {
+                        try {
+                          await controller.register(
+                              controller.emailController.text,
+                              controller.passwordController.text);
+                          Get.snackbar('Success', 'Register successfully');
+                          Get.toNamed("/login");
+                        } catch (e) {
+                          Get.snackbar('Error', e.toString());
+                        }
                       },
                     ),
                     SizedBox(height: 20.h),

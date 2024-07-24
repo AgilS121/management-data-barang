@@ -12,7 +12,20 @@
           "package_name": "com.dekaybaro.app.dekaybaro"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1063875415766-jg9fvi99lfi3d6gkirb3vk2rler7fr16.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.dekaybaro.app.dekaybaro",
+            "certificate_hash": "8e32518434b8224f5c6c41866cf1d0d29b1b1711"
+          }
+        },
+        {
+          "client_id": "1063875415766-g82ootdetlbro4nr02a58mlmceimok4p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAX6YFDiNjgdqfGlb3eVBRcy74qU_vmgnY"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1063875415766-g82ootdetlbro4nr02a58mlmceimok4p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
