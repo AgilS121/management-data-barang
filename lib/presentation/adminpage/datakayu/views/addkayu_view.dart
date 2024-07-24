@@ -1,10 +1,12 @@
-import 'package:dekaybaro/infrastructure/theme/colors.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
+import 'package:dekaybaro/infrastructure/theme/colors.dart';
+import 'package:dekaybaro/presentation/adminpage/datakayu/controllers/datakayu.controller.dart';
 
-class AddkayuView extends GetView {
+class AddkayuView extends GetView<DatakayuController> {
   const AddkayuView({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,7 +14,7 @@ class AddkayuView extends GetView {
         title: const Text('Tambah Kayu'),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () => Get.back(),
         ),
       ),
@@ -22,48 +24,19 @@ class AddkayuView extends GetView {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Foto',
+              const Text('Foto',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-              SizedBox(height: 8),
-              Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: TextButton(
-                  onPressed: () {
-                    // Add logic to pick a file
-                  },
-                  child:
-                      Text('Pilih File', style: TextStyle(color: Colors.red)),
-                ),
-              ),
-              SizedBox(height: 16),
-              buildTextField('Nama Kayu'),
-              buildTextField('Deskripsi', maxLines: 3),
-              buildTextField('Stok'),
-              buildTextField('Kualitas'),
-              buildTextField('Harga'),
-              SizedBox(height: 20),
-              Container(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    // Logic to save new employee
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.coklat7,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Text('Simpan', style: TextStyle(fontSize: 16)),
-                  ),
-                ),
-              ),
+              const SizedBox(height: 8),
+              _buildImagePicker(),
+              const SizedBox(height: 16),
+              _buildTextField('Nama Kayu', controller.nameController),
+              _buildTextField('Deskripsi', controller.descriptionController,
+                  maxLines: 3),
+              _buildTextField('Stok', controller.stockController),
+              _buildTextField('Kualitas', controller.qualityController),
+              _buildTextField('Harga', controller.priceController),
+              const SizedBox(height: 20),
+              _buildSaveButton(),
             ],
           ),
         ),
@@ -71,16 +44,65 @@ class AddkayuView extends GetView {
     );
   }
 
-  Widget buildTextField(String label, {int maxLines = 1}) {
+  Widget _buildImagePicker() {
+    return Obx(() => controller.imageFiles.isEmpty
+        ? Container(
+            width: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.grey),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: TextButton(
+              onPressed: () => controller.pickImages(),
+              child:
+                  const Text('Pilih File', style: TextStyle(color: Colors.red)),
+            ),
+          )
+        : Wrap(
+            spacing: 10,
+            runSpacing: 10,
+            children: controller.imageFiles
+                .map((file) => Image.file(
+                      File(file.path),
+                      width: 100,
+                      height: 100,
+                      fit: BoxFit.cover,
+                    ))
+                .toList(),
+          ));
+  }
+
+  Widget _buildTextField(String label, TextEditingController textController,
+      {int maxLines = 1}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
+        controller: textController,
         maxLines: maxLines,
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8),
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSaveButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () => controller.addNewProduct(),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.coklat7,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          child: Text('Simpan', style: TextStyle(fontSize: 16)),
         ),
       ),
     );

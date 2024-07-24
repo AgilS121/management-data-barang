@@ -2,11 +2,8 @@ import 'package:dekaybaro/infrastructure/theme/colors.dart';
 import 'package:dekaybaro/presentation/adminpage/datakayu/views/addkayu_view.dart';
 import 'package:dekaybaro/presentation/utils/componentadmins/views/card_kayu_view.dart';
 import 'package:dekaybaro/presentation/utils/componentadmins/views/custom_bottom_navbar_admin_view.dart';
-import 'package:dekaybaro/presentation/utils/views/reusable_button_view.dart';
 import 'package:dekaybaro/presentation/utils/views/reusable_text_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'package:get/get.dart';
 
 import 'controllers/datakayu.controller.dart';
@@ -26,20 +23,22 @@ class DatakayuScreen extends GetView<DatakayuController> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: Obx(() => ListView.builder(
-                    itemCount: controller.cartItems.length,
-                    itemBuilder: (context, index) {
-                      return CardKayuView(product: controller.cartItems[index]);
-                    },
-                  )),
-            ),
-          ],
-        ),
-      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        } else if (controller.errorMessage.isNotEmpty) {
+          return Center(child: Text(controller.errorMessage.value));
+        } else if (controller.products.isEmpty) {
+          return Center(child: Text("Tidak ada data kayu"));
+        } else {
+          return ListView.builder(
+            itemCount: controller.products.length,
+            itemBuilder: (context, index) {
+              return CardKayuView(product: controller.products[index]);
+            },
+          );
+        }
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.to(() => AddkayuView());

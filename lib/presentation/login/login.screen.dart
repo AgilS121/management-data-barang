@@ -121,6 +121,7 @@ class LoginScreen extends GetView<LoginController> {
                               controller.emailController.text,
                               controller.passwordController.text);
                           Get.snackbar('Success', 'Logged in successfully');
+                          Get.toNamed("/homeadmin");
                         } catch (e) {
                           Get.snackbar('Error', e.toString());
                         }

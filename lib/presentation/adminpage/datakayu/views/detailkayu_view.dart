@@ -3,16 +3,14 @@ import 'package:dekaybaro/infrastructure/theme/colors.dart';
 import 'package:dekaybaro/presentation/adminpage/datakayu/controllers/datakayu.controller.dart';
 import 'package:dekaybaro/presentation/utils/views/reusable_text_view.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 
 class DetailkayuView extends GetView<DatakayuController> {
   const DetailkayuView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    Get.put(DatakayuController());
+    // Mengambil data produk dari arguments yang diteruskan
     final Product product = Get.arguments;
-    print("data kayu ${product.image} ${product.name}");
 
     return Scaffold(
       appBar: AppBar(
@@ -28,6 +26,7 @@ class DetailkayuView extends GetView<DatakayuController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Gambar produk
             Container(
               width: double.infinity,
               height: 250,
@@ -39,15 +38,46 @@ class DetailkayuView extends GetView<DatakayuController> {
               child: Stack(
                 children: [
                   Center(
-                    child: Text(
-                      "404",
-                      style: TextStyle(
-                        fontSize: 100,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.green[800],
-                      ),
-                    ),
+                    child: product.image.isNotEmpty
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.network(
+                              product.image[0],
+                              width: double.infinity,
+                              height: double.infinity,
+                              fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) {
+                                return Container(
+                                  color: Colors.lightGreen[100],
+                                  child: Center(
+                                    child: Text(
+                                      '404',
+                                      style: TextStyle(
+                                        fontSize: 100,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.green[800],
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        : Container(
+                            color: Colors.lightGreen[100],
+                            child: Center(
+                              child: Text(
+                                'No Image',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.green[800],
+                                ),
+                              ),
+                            ),
+                          ),
                   ),
+                  // Tombol favorite
                   Positioned(
                     top: 10,
                     right: 10,
@@ -68,20 +98,21 @@ class DetailkayuView extends GetView<DatakayuController> {
                 ],
               ),
             ),
+            // Informasi produk
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Kayu Alba",
+                    product.name,
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    "Lorem Ipsum Dolor sit amet",
+                    product.deskripsi!,
                     style: TextStyle(
                       color: Colors.grey,
                     ),
@@ -91,7 +122,7 @@ class DetailkayuView extends GetView<DatakayuController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Total Stok"),
-                      Text("60 / Blok"),
+                      Text("${product.stok} / Blok"),
                     ],
                   ),
                   SizedBox(height: 8),
@@ -99,7 +130,7 @@ class DetailkayuView extends GetView<DatakayuController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Kualitas"),
-                      Text("Bagus"),
+                      Text(product.kualitas!),
                     ],
                   ),
                   SizedBox(height: 8),
@@ -107,7 +138,7 @@ class DetailkayuView extends GetView<DatakayuController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text("Harga"),
-                      Text("700.000/M"),
+                      Text("Rp ${product.price} / M"),
                     ],
                   ),
                 ],
@@ -116,9 +147,30 @@ class DetailkayuView extends GetView<DatakayuController> {
           ],
         ),
       ),
+      // Tombol untuk menghapus produk
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Logika ketika tombol ditekan
+          // Tampilkan dialog konfirmasi sebelum menghapus produk
+          Get.dialog(
+            AlertDialog(
+              title: Text("Hapus Produk"),
+              content: Text("Apakah Anda yakin ingin menghapus produk ini?"),
+              actions: [
+                TextButton(
+                  onPressed: () => Get.back(),
+                  child: Text("Batal"),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    await controller.deleteProduct(product.id!);
+                    Get.back();
+                    Get.back();
+                  },
+                  child: Text("Hapus"),
+                ),
+              ],
+            ),
+          );
         },
         backgroundColor: AppColors.whiteColor,
         child: Icon(

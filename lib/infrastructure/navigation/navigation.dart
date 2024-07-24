@@ -1,3 +1,4 @@
+import 'package:dekaybaro/presentation/adminpage/datakayu/views/addkayu_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -134,6 +135,11 @@ class Nav {
     GetPage(
       name: Routes.DATAKAYU,
       page: () => const DatakayuScreen(),
+      binding: DatakayuControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.ADDKAYU,
+      page: () => const AddkayuView(),
       binding: DatakayuControllerBinding(),
     ),
     GetPage(

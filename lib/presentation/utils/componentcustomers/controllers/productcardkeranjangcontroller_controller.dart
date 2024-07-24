@@ -13,25 +13,25 @@ class ProductcardkeranjangcontrollerController extends GetxController {
     super.onInit();
     // Contoh data
     cartItems.addAll([
-      Product(id: 1, name: 'Kayu Alba', price: 900000, image: [
+      Product(id: "1", name: 'Kayu Alba', price: 900000, image: [
         'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png',
         'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png'
       ]),
-      Product(id: 2, name: 'Kayu Jati', price: 1500000, image: [
+      Product(id: "2", name: 'Kayu Jati', price: 1500000, image: [
         'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png',
         'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png'
       ]),
-      Product(id: 3, name: 'Kayu Jati', price: 1500000, image: [
+      Product(id: "3", name: 'Kayu Jati', price: 1500000, image: [
         'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png',
         'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png'
       ]),
-      Product(id: 4, name: 'Kayu Jati', price: 1500000, image: [
+      Product(id: "4", name: 'Kayu Jati', price: 1500000, image: [
         'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png',
         'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png'
       ]),
     ]);
     for (var item in cartItems) {
-      quantities[item.id!] = 1;
+      quantities[int.parse(item.id!)] = 1;
     }
   }
 
@@ -40,12 +40,12 @@ class ProductcardkeranjangcontrollerController extends GetxController {
   int get total => subTotal + ongkir.value;
 
   void increaseQuantity(Product product) {
-    quantities[product.id!] = (quantities[product.id] ?? 0) + 1;
+    quantities[int.parse(product.id!)] = (quantities[product.id] ?? 0) + 1;
   }
 
   void decreaseQuantity(Product product) {
     if ((quantities[product.id] ?? 0) > 0) {
-      quantities[product.id!] = quantities[product.id]! - 1;
+      quantities[int.parse(product.id!)] = quantities[product.id]! - 1;
       if (quantities[product.id] == 0) {
         removeItem(product);
       }
