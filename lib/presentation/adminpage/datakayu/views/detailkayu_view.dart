@@ -10,7 +10,7 @@ class DetailkayuView extends GetView<DatakayuController> {
   const DetailkayuView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    Get.put(DatakayuController());
+    // Get.put(DatakayuController());
     final Product product = Get.arguments;
     print("data kayu ${product.image} ${product.name}");
 

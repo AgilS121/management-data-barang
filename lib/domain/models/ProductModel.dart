@@ -1,5 +1,5 @@
 class Product {
-  final int? id;
+  final String? id;
   final String name;
   final int price;
   final List<String> image;
@@ -61,5 +61,37 @@ class Product {
       'sertifikasiKeberlanjutan': sertifikasiKeberlanjutan,
       'stok': stok
     };
+  }
+
+  Product copyWith({
+    String? id,
+    String? name,
+    int? price,
+    List<String>? image,
+    String? deskripsi,
+    bool? adalahKayuGelondongan,
+    List<String>? dimensi,
+    List<String>? konfigurasi,
+    String? jenisKayu,
+    String? kualitas,
+    String? sertifikasiKeberlanjutan,
+    int? stok,
+  }) {
+    return Product(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      price: price ?? this.price,
+      image: image ?? this.image,
+      deskripsi: deskripsi ?? this.deskripsi,
+      adalahKayuGelondongan:
+          adalahKayuGelondongan ?? this.adalahKayuGelondongan,
+      dimensi: dimensi ?? this.dimensi,
+      konfigurasi: konfigurasi ?? this.konfigurasi,
+      jenisKayu: jenisKayu ?? this.jenisKayu,
+      kualitas: kualitas ?? this.kualitas,
+      sertifikasiKeberlanjutan:
+          sertifikasiKeberlanjutan ?? this.sertifikasiKeberlanjutan,
+      stok: stok ?? this.stok,
+    );
   }
 }

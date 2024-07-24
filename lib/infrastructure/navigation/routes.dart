@@ -28,4 +28,5 @@ class Routes {
   static const SEMUA_PRODUCT = '/semua-product';
   static const TENTANGAPLIKASI = '/tentangaplikasi';
   static const PENDAPATAN = '/pendapatan';
+  static const ADDKAYU = '/addkayu';
 }

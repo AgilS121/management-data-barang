@@ -10,21 +10,21 @@ class KeranjangController extends GetxController {
     super.onInit();
     // Contoh data
     cartItems.addAll([
-      Product(id: 1, name: 'Kayu Alba', price: 900000, image: ['']),
-      Product(id: 2, name: 'Kayu Jati', price: 1500000, image: ['']),
+      Product(id: "1", name: 'Kayu Alba', price: 900000, image: ['']),
+      Product(id: "2", name: 'Kayu Jati', price: 1500000, image: ['']),
     ]);
     for (var item in cartItems) {
-      quantities[item.id!] = 1;
+      quantities[int.parse(item.id!)] = 1;
     }
   }
 
   void increaseQuantity(Product product) {
-    quantities[product.id!] = (quantities[product.id] ?? 0) + 1;
+    quantities[int.parse(product.id!)] = (quantities[product.id] ?? 0) + 1;
   }
 
   void decreaseQuantity(Product product) {
     if ((quantities[product.id] ?? 0) > 0) {
-      quantities[product.id!] = quantities[product.id]! - 1;
+      quantities[int.parse(product.id!)] = quantities[product.id]! - 1;
       if (quantities[product.id] == 0) {
         removeItem(product);
       }
