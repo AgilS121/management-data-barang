@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dekaybaro/domain/models/ProductModel.dart';
@@ -10,45 +9,6 @@ class ProductRepositoryImpl implements ProductRepository {
   final FirebaseStorage storage;
 
   ProductRepositoryImpl(this.firestore, this.storage);
-
-  // @override
-  // Future<Either<Exception, Product>> addProduct(Product product) async {
-  //   try {
-  //     // Upload images to Firebase Storage and get URLs
-  //     List<String> imageUrls = [];
-  //     for (String path in product.image) {
-  //       File file = File(path);
-  //       String fileName = file.path.split('/').last;
-  //       Reference ref = storage.ref().child('products/$fileName');
-  //       UploadTask uploadTask = ref.putFile(file);
-  //       TaskSnapshot taskSnapshot = await uploadTask;
-  //       String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-  //       imageUrls.add(downloadUrl);
-  //     }
-
-  //     // Create a new product with the image URLs
-  //     Product newProduct = Product(
-  //       id: product.id,
-  //       name: product.name,
-  //       price: product.price,
-  //       image: imageUrls,
-  //       deskripsi: product.deskripsi,
-  //       adalahKayuGelondongan: product.adalahKayuGelondongan,
-  //       dimensi: product.dimensi,
-  //       konfigurasi: product.konfigurasi,
-  //       jenisKayu: product.jenisKayu,
-  //       kualitas: product.kualitas,
-  //       sertifikasiKeberlanjutan: product.sertifikasiKeberlanjutan,
-  //       stok: product.stok,
-  //     );
-
-  //     // Save product to Firestore
-  //     await firestore.collection('products').add(newProduct.toJson());
-  //     return Right(newProduct);
-  //   } catch (e) {
-  //     return Left(Exception(e.toString()));
-  //   }
-  // }
 
   @override
   Future<Either<Exception, Product>> addProduct(Product product) async {
@@ -97,10 +57,14 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<Either<Exception, void>> deleteProduct(String id) async {
     try {
-      await firestore.collection('products').doc(id.toString()).delete();
+      // Menghapus dokumen produk dari Firestore
+      await firestore.collection('products').doc(id).delete();
+
+      // Mengembalikan Right dengan null, menandakan operasi berhasil
       return Right(null);
     } catch (e) {
-      return Left(Exception(e.toString()));
+      // Mengembalikan Left dengan pesan kesalahan jika ada kesalahan
+      return Left(Exception('Error deleting product: $e'));
     }
   }
 }

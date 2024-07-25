@@ -13,7 +13,7 @@ class CardKayuView extends GetView {
 
   @override
   Widget build(BuildContext context) {
-    print("data image ${product.image[0]}");
+    print("data image ${product.image}");
     return GestureDetector(
       onTap: () {
         Get.to(() => DetailkayuView(), arguments: product);

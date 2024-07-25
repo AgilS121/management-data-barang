@@ -19,7 +19,7 @@ class KeranjangScreen
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: ReusableTextView(
-          text: "Kerangjang",
+          text: "Keranjang",
           sizetext: 22,
           textcolor: AppColors.blacktext,
           fontWeight: FontWeight.bold,
