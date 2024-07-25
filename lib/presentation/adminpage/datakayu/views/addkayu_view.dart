@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:dekaybaro/presentation/utils/views/reusable_text_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dekaybaro/infrastructure/theme/colors.dart';
@@ -102,7 +103,8 @@ class AddkayuView extends GetView<DatakayuController> {
         ),
         child: const Padding(
           padding: EdgeInsets.symmetric(vertical: 16),
-          child: Text('Simpan', style: TextStyle(fontSize: 16)),
+          child: ReusableTextView(
+              text: "Simpan", sizetext: 16, textcolor: AppColors.whiteColor),
         ),
       ),
     );

@@ -49,7 +49,7 @@ class CardKaryawanView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ReusableTextView(
-                      text: karyawan.name,
+                      text: karyawan.name ?? "",
                       sizetext: 20,
                       textcolor: AppColors.blackColor,
                     ),
@@ -62,11 +62,15 @@ class CardKaryawanView extends StatelessWidget {
                   IconButton(
                     icon: Icon(Icons.edit, color: AppColors.coklat6),
                     onPressed: () {
-                      Get.to(() => EditkaryawanView(), arguments: karyawan);
+                      Get.to(
+                          () => EditkaryawanView(
+                                karyawan: karyawan,
+                              ),
+                          arguments: karyawan);
                     },
                   ),
                   ReusableTextView(
-                    text: karyawan.status,
+                    text: karyawan.status ?? "",
                     sizetext: 16,
                     textcolor: AppColors.greytext,
                   ),
