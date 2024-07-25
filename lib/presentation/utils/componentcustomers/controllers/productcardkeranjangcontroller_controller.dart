@@ -40,13 +40,15 @@ class ProductcardkeranjangcontrollerController extends GetxController {
   int get total => subTotal + ongkir.value;
 
   void increaseQuantity(Product product) {
-    quantities[int.parse(product.id!)] = (quantities[product.id] ?? 0) + 1;
+    quantities[int.parse(product.id!)] =
+        (quantities[int.parse(product.id!)] ?? 0) + 1;
   }
 
   void decreaseQuantity(Product product) {
-    if ((quantities[product.id] ?? 0) > 0) {
-      quantities[int.parse(product.id!)] = quantities[product.id]! - 1;
-      if (quantities[product.id] == 0) {
+    if ((quantities[int.parse(product.id!)] ?? 0) > 0) {
+      quantities[int.parse(product.id!)] =
+          quantities[int.parse(product.id!)]! - 1;
+      if (quantities[int.parse(product.id!)] == 0) {
         removeItem(product);
       }
     }
@@ -54,11 +56,11 @@ class ProductcardkeranjangcontrollerController extends GetxController {
 
   void removeItem(Product product) {
     cartItems.remove(product);
-    quantities.remove(product.id);
+    quantities.remove(int.parse(product.id!));
   }
 
   int getQuantity(Product product) {
-    return quantities[product.id] ?? 0;
+    return quantities[int.parse(product.id!)] ?? 0;
   }
 
   void nextStep() {

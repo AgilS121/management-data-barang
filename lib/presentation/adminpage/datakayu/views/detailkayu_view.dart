@@ -12,6 +12,8 @@ class DetailkayuView extends GetView<DatakayuController> {
     // Mengambil data produk dari arguments yang diteruskan
     final Product product = Get.arguments;
 
+    print("cek image ${product.image[0]}");
+
     return Scaffold(
       appBar: AppBar(
         title: ReusableTextView(
@@ -162,7 +164,7 @@ class DetailkayuView extends GetView<DatakayuController> {
                 ),
                 TextButton(
                   onPressed: () async {
-                    await controller.deleteProduct(product.id!);
+                    await controller.deleteProductById(product.id!);
                     Get.back();
                     Get.back();
                   },

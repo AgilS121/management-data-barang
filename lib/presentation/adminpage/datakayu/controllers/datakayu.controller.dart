@@ -123,6 +123,8 @@ class DatakayuController extends GetxController {
 
     List<String> updatedImageUrls = [];
 
+    print("cek image 2 $imageUrls");
+
     try {
       if (imageFiles.isNotEmpty) {
         for (var imageFile in imageFiles) {
@@ -130,8 +132,7 @@ class DatakayuController extends GetxController {
           updatedImageUrls.add(imageUrl);
         }
       } else {
-        updatedImageUrls =
-            imageUrls; // Jika tidak ada gambar baru, gunakan gambar yang ada
+        updatedImageUrls = imageUrls;
       }
 
       final updatedProduct = product.copyWith(
@@ -140,7 +141,6 @@ class DatakayuController extends GetxController {
         stok: int.parse(stockController.text),
         kualitas: qualityController.text,
         price: int.parse(priceController.text),
-        image: updatedImageUrls,
       );
 
       final result = await updateProduct(updatedProduct);
@@ -170,6 +170,23 @@ class DatakayuController extends GetxController {
     final TaskSnapshot downloadUrl = await uploadTask;
     final String url = await downloadUrl.ref.getDownloadURL();
     return url;
+  }
+
+  Future<void> deleteProductById(String id) async {
+    isLoading.value = true;
+
+    final result = await deleteProduct(id);
+    result.fold(
+      (exception) {
+        errorMessage.value = exception.toString();
+      },
+      (_) {
+        products.removeWhere((product) => product.id == id);
+        print("Produk dengan ID $id berhasil dihapus.");
+      },
+    );
+
+    isLoading.value = false;
   }
 
   void pickImages() async {
