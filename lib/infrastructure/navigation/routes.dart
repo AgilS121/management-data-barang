@@ -29,4 +29,6 @@ class Routes {
   static const TENTANGAPLIKASI = '/tentangaplikasi';
   static const PENDAPATAN = '/pendapatan';
   static const ADDKAYU = '/addkayu';
+  static const ADDKARYAWAN = '/addkaryawan';
+  static const EDITKARYAWAN = '/editkaryawan';
 }

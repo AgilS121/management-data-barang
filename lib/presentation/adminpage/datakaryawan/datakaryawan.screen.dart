@@ -25,21 +25,23 @@ class DatakaryawanScreen extends GetView<DatakaryawanController> {
         ),
         centerTitle: true,
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Expanded(
-              child: Obx(() => ListView.builder(
-                    itemCount: controller.karyawanitems.length,
-                    itemBuilder: (context, index) {
-                      return CardKaryawanView(
-                          karyawan: controller.karyawanitems[index]);
-                    },
-                  )),
-            ),
-          ],
-        ),
-      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        } else if (controller.errorMessage.isNotEmpty) {
+          return Center(child: Text(controller.errorMessage.value));
+        } else if (controller.karyawanItems.isEmpty) {
+          return Center(child: Text("Tidak ada data kayu"));
+        } else {
+          return ListView.builder(
+            itemCount: controller.karyawanItems.length,
+            itemBuilder: (context, index) {
+              return CardKaryawanView(
+                  karyawan: controller.karyawanItems[index]);
+            },
+          );
+        }
+      }),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Get.to(() => AddkaryawanView());

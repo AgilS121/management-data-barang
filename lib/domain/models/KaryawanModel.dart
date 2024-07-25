@@ -1,23 +1,23 @@
 class KaryawanModel {
-  final int id;
-  final String name;
-  final String position;
-  final String status;
-  final String email;
-  final String phone;
-  final String image;
-  final String salary;
+  final String? id;
+  final String? name;
+  final String? position;
+  final String? status;
+  final String? email;
+  final String? phone;
+  final String? image;
+  final String? salary;
   final String? bio;
 
   KaryawanModel(
-      {required this.id,
-      required this.name,
-      required this.position,
-      required this.status,
-      required this.email,
-      required this.phone,
-      required this.image,
-      required this.salary,
+      {this.id,
+      this.name,
+      this.position,
+      this.status,
+      this.email,
+      this.phone,
+      this.image,
+      this.salary,
       this.bio});
 
   // Factory constructor to create an KaryawanModel from a JSON map
@@ -47,5 +47,29 @@ class KaryawanModel {
       'salary': salary,
       'bio': bio
     };
+  }
+
+  KaryawanModel copyWith({
+    String? id,
+    String? name,
+    String? position,
+    String? status,
+    String? email,
+    String? phone,
+    String? image,
+    String? salary,
+    String? bio,
+  }) {
+    return KaryawanModel(
+      id: id ?? this.id,
+      name: name ?? this.name,
+      position: position ?? this.position,
+      status: status ?? this.status,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      image: image ?? this.image,
+      salary: salary ?? this.salary,
+      bio: bio ?? this.bio,
+    );
   }
 }

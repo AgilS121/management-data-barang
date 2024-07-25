@@ -1,3 +1,4 @@
+import 'package:dekaybaro/presentation/adminpage/datakaryawan/views/addkaryawan_view.dart';
 import 'package:dekaybaro/presentation/adminpage/datakayu/views/addkayu_view.dart';
 import 'package:flutter/material.dart';
 
@@ -130,6 +131,11 @@ class Nav {
     GetPage(
       name: Routes.DATAKARYAWAN,
       page: () => const DatakaryawanScreen(),
+      binding: DatakaryawanControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.ADDKARYAWAN,
+      page: () => const AddkaryawanView(),
       binding: DatakaryawanControllerBinding(),
     ),
     GetPage(

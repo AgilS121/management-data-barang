@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:dekaybaro/presentation/utils/views/reusable_text_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dekaybaro/domain/models/ProductModel.dart';
@@ -74,7 +75,10 @@ class EditkayuView extends StatelessWidget {
                   ),
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 16),
-                    child: Text('Simpan', style: TextStyle(fontSize: 16)),
+                    child: ReusableTextView(
+                        text: "Simpan",
+                        sizetext: 16,
+                        textcolor: AppColors.whiteColor),
                   ),
                 ),
               ),
@@ -134,23 +138,30 @@ class EditkayuView extends StatelessWidget {
     return Obx(() {
       return controller.imageUrls.isEmpty
           ? Text('Tidak ada gambar')
-          : Column(
-              children: controller.imageUrls.map((url) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Image.network(
-                    url,
-                    height: 150,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Container(
-                        color: Colors.grey[200],
-                        child: Center(child: Text('Gagal memuat gambar')),
-                      );
-                    },
-                  ),
-                );
-              }).toList(),
+          : Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.green.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Column(
+                children: controller.imageUrls.map((url) {
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Image.network(
+                      url,
+                      height: 150,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return Container(
+                          color: Colors.grey[200],
+                          child: Center(child: Text('Gagal memuat gambar')),
+                        );
+                      },
+                    ),
+                  );
+                }).toList(),
+              ),
             );
     });
   }

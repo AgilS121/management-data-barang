@@ -1,13 +1,24 @@
+import 'package:dekaybaro/presentation/adminpage/datakaryawan/controllers/datakaryawan.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dekaybaro/infrastructure/theme/colors.dart';
 import 'package:dekaybaro/domain/models/KaryawanModel.dart';
 
-class EditkaryawanView extends GetView {
-  const EditkaryawanView({Key? key}) : super(key: key);
+class EditkaryawanView extends GetView<DatakaryawanController> {
+  final KaryawanModel karyawan;
+
+  EditkaryawanView({Key? key, required this.karyawan}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    controller.nameController.text = karyawan.name!;
+    controller.phoneController.text = karyawan.phone!;
+    controller.emailController.text = karyawan.email!;
+    controller.positionController.text = karyawan.position!;
+    controller.statusController.text = karyawan.status!;
+    controller.salaryController.text = karyawan.salary!;
+    controller.bioController.text = karyawan.bio!;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Edit Karyawan'),
@@ -33,40 +44,37 @@ class EditkaryawanView extends GetView {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: TextButton(
-                  onPressed: () {
-                    // Add logic to pick a file
+                  onPressed: () async {
+                    controller.pickImages(); // Pick images
                   },
                   child:
                       Text('Pilih File', style: TextStyle(color: Colors.red)),
                 ),
               ),
               SizedBox(height: 16),
-              Container(
-                width: double.infinity,
-                height: 100,
-                decoration: BoxDecoration(
-                  color: Colors.green.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(8),
+              // Display existing images if available
+              if (karyawan.image!.isNotEmpty) ...[
+                Image.network(
+                  karyawan.image!, // Directly use the image URL string
+                  height: 100,
+                  width: 100,
                 ),
-                child: Center(
-                  child: Text('404',
-                      style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
-                ),
-              ),
-              SizedBox(height: 16),
-              buildTextField('Nama', 'John'),
-              buildTextField('Telepon', '081xxxxxxx'),
-              buildTextField('Alamat', 'Bojong gede, banyumas, purwokerto',
-                  maxLines: 3),
-              buildTextField('Umur', '25'),
-              buildTextField('Bio', 'Semangat Sukses'),
+                SizedBox(height: 16),
+              ],
+              buildTextField('Nama', controller.nameController),
+              buildTextField('Telepon', controller.phoneController),
+              buildTextField('Email', controller.emailController),
+              buildTextField('Posisi', controller.positionController),
+              buildTextField('Status', controller.statusController),
+              buildTextField('Gaji', controller.salaryController),
+              buildTextField('Bio', controller.bioController, maxLines: 3),
               SizedBox(height: 20),
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Logic to save edited employee details
+                    controller.updateExistingKaryawan(karyawan);
+                    Get.back();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.coklat7,
@@ -87,12 +95,13 @@ class EditkaryawanView extends GetView {
     );
   }
 
-  Widget buildTextField(String label, String initialValue, {int maxLines = 1}) {
+  Widget buildTextField(String label, TextEditingController controller,
+      {int maxLines = 1}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
+        controller: controller,
         maxLines: maxLines,
-        controller: TextEditingController(text: initialValue),
         decoration: InputDecoration(
           labelText: label,
           border: OutlineInputBorder(

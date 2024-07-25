@@ -98,7 +98,9 @@ class DatakayuController extends GetxController {
           products.add(product);
           print(
               "Produk berhasil disimpan: ${product.name} dengan ID: ${product.id}");
+
           resetForm();
+          Get.back();
         },
       );
     } catch (e) {

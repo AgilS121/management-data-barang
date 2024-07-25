@@ -1,8 +1,9 @@
+import 'package:dekaybaro/presentation/adminpage/datakaryawan/controllers/datakaryawan.controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dekaybaro/infrastructure/theme/colors.dart';
 
-class AddkaryawanView extends GetView {
+class AddkaryawanView extends GetView<DatakaryawanController> {
   const AddkaryawanView({Key? key}) : super(key: key);
 
   @override
@@ -32,25 +33,27 @@ class AddkaryawanView extends GetView {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: TextButton(
-                  onPressed: () {
-                    // Add logic to pick a file
+                  onPressed: () async {
+                    controller.pickImages(); // Pick images
                   },
                   child:
                       Text('Pilih File', style: TextStyle(color: Colors.red)),
                 ),
               ),
               SizedBox(height: 16),
-              buildTextField('Nama'),
-              buildTextField('Telepon'),
-              buildTextField('Alamat', maxLines: 3),
-              buildTextField('Umur'),
-              buildTextField('Bio'),
+              buildTextField('Nama', controller.nameController),
+              buildTextField('Telepon', controller.phoneController),
+              buildTextField('Email', controller.emailController),
+              buildTextField('Posisi', controller.positionController),
+              buildTextField('Status', controller.statusController),
+              buildTextField('Gaji', controller.salaryController),
+              buildTextField('Bio', controller.bioController, maxLines: 3),
               SizedBox(height: 20),
               Container(
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () {
-                    // Logic to save new employee
+                    controller.addNewKaryawan(); // Save new employee
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.coklat7,
@@ -71,10 +74,12 @@ class AddkaryawanView extends GetView {
     );
   }
 
-  Widget buildTextField(String label, {int maxLines = 1}) {
+  Widget buildTextField(String label, TextEditingController controller,
+      {int maxLines = 1}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
+        controller: controller,
         maxLines: maxLines,
         decoration: InputDecoration(
           labelText: label,
