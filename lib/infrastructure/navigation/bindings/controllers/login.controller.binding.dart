@@ -4,7 +4,6 @@ import 'package:dekaybaro/domain/repositories/AuthRepositories.dart';
 import 'package:dekaybaro/domain/usecase/LoginEmail.dart';
 import 'package:dekaybaro/domain/usecase/LoginGoogle.dart';
 import 'package:dekaybaro/domain/usecase/Logout.dart';
-import 'package:dekaybaro/domain/usecase/RegisterEmail.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -14,9 +13,6 @@ import '../../../../presentation/login/controllers/login.controller.dart';
 class LoginControllerBinding extends Bindings {
   @override
   void dependencies() {
-    // Get.lazyPut<LoginController>(
-    //   () => LoginController(),
-    // );
     final firebaseAuth = FirebaseAuth.instance;
     final googleSignIn = GoogleSignIn();
     final firestore = FirebaseFirestore.instance;
@@ -30,7 +26,6 @@ class LoginControllerBinding extends Bindings {
     Get.lazyPut(() => LoginController(
           loginWithEmail: Get.find(),
           loginWithGoogle: Get.find(),
-          logout: Get.find(),
         ));
   }
 }
