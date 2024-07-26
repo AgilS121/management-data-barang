@@ -17,7 +17,7 @@ class GetAllProducts {
 
   GetAllProducts(this.repository);
 
-  Future<Either<Exception, List<Product>>> call() {
+  Stream<Either<Exception, List<Product>>> call() {
     return repository.getAllProducts();
   }
 }

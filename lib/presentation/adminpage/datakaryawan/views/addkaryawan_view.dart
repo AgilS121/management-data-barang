@@ -1,4 +1,5 @@
 import 'package:dekaybaro/presentation/adminpage/datakaryawan/controllers/datakaryawan.controller.dart';
+import 'package:dekaybaro/presentation/utils/views/reusable_text_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dekaybaro/infrastructure/theme/colors.dart';
@@ -23,8 +24,12 @@ class AddkaryawanView extends GetView<DatakaryawanController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Profil',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              ReusableTextView(
+                text: "Profil",
+                sizetext: 16,
+                textcolor: AppColors.blackColor,
+                fontWeight: FontWeight.bold,
+              ),
               SizedBox(height: 8),
               Container(
                 width: double.infinity,
