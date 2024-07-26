@@ -82,7 +82,8 @@ class ProfiladminScreen extends GetView<ProfiladminController> {
               leading: Icon(Icons.logout),
               title: Text('Keluar'),
               onTap: () {
-                // Tambahkan logika untuk logout
+                controller.logout();
+                Get.offAllNamed("/login");
               },
             ),
           ],

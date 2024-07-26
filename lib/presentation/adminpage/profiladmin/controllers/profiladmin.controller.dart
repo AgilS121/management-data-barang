@@ -1,23 +1,17 @@
+import 'package:dekaybaro/domain/entities/UserEntitites.dart';
+import 'package:dekaybaro/domain/usecase/Logout.dart';
 import 'package:get/get.dart';
 
 class ProfiladminController extends GetxController {
-  //TODO: Implement ProfiladminController
+  final Logout logout;
+  var user = Rxn<UserEntity>();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  ProfiladminController({
+    required this.logout,
+  });
+
+  Future<void> signOut() async {
+    await logout.call();
+    user.value = null;
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
