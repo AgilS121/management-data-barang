@@ -29,16 +29,17 @@ class ProductRepositoryImpl implements ProductRepository {
   }
 
   @override
-  Future<Either<Exception, List<Product>>> getAllProducts() async {
-    try {
-      QuerySnapshot snapshot = await firestore.collection('products').get();
-      List<Product> products = snapshot.docs.map((doc) {
-        return Product.fromJson(doc.data() as Map<String, dynamic>);
-      }).toList();
-      return Right(products);
-    } catch (e) {
-      return Left(Exception(e.toString()));
-    }
+  Stream<Either<Exception, List<Product>>> getAllProducts() {
+    return firestore.collection('products').snapshots().map((snapshot) {
+      try {
+        List<Product> products = snapshot.docs.map((doc) {
+          return Product.fromJson(doc.data() as Map<String, dynamic>);
+        }).toList();
+        return Right(products);
+      } catch (e) {
+        return Left(Exception(e.toString()));
+      }
+    });
   }
 
   @override

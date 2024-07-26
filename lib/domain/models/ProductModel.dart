@@ -11,6 +11,7 @@ class Product {
   final String? kualitas;
   final String? sertifikasiKeberlanjutan;
   final int? stok;
+  final String? category;
 
   Product(
       {this.id,
@@ -24,7 +25,8 @@ class Product {
       this.jenisKayu,
       this.kualitas,
       this.sertifikasiKeberlanjutan,
-      this.stok = 0});
+      this.stok = 0,
+      this.category});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -43,7 +45,8 @@ class Product {
         jenisKayu: json['jenisKayu'],
         kualitas: json['kualitas'],
         sertifikasiKeberlanjutan: json['sertifikasiKeberlanjutan'],
-        stok: json['stok']);
+        stok: json['stok'],
+        category: json['category']);
   }
 
   Map<String, dynamic> toJson() {
@@ -59,39 +62,40 @@ class Product {
       'jenisKayu': jenisKayu,
       'kualitas': kualitas,
       'sertifikasiKeberlanjutan': sertifikasiKeberlanjutan,
-      'stok': stok
+      'stok': stok,
+      'category': category
     };
   }
 
-  Product copyWith({
-    String? id,
-    String? name,
-    int? price,
-    List<String>? image,
-    String? deskripsi,
-    bool? adalahKayuGelondongan,
-    List<String>? dimensi,
-    List<String>? konfigurasi,
-    String? jenisKayu,
-    String? kualitas,
-    String? sertifikasiKeberlanjutan,
-    int? stok,
-  }) {
+  Product copyWith(
+      {String? id,
+      String? name,
+      int? price,
+      List<String>? image,
+      String? deskripsi,
+      bool? adalahKayuGelondongan,
+      List<String>? dimensi,
+      List<String>? konfigurasi,
+      String? jenisKayu,
+      String? kualitas,
+      String? sertifikasiKeberlanjutan,
+      int? stok,
+      String? category}) {
     return Product(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      price: price ?? this.price,
-      image: image ?? this.image,
-      deskripsi: deskripsi ?? this.deskripsi,
-      adalahKayuGelondongan:
-          adalahKayuGelondongan ?? this.adalahKayuGelondongan,
-      dimensi: dimensi ?? this.dimensi,
-      konfigurasi: konfigurasi ?? this.konfigurasi,
-      jenisKayu: jenisKayu ?? this.jenisKayu,
-      kualitas: kualitas ?? this.kualitas,
-      sertifikasiKeberlanjutan:
-          sertifikasiKeberlanjutan ?? this.sertifikasiKeberlanjutan,
-      stok: stok ?? this.stok,
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        price: price ?? this.price,
+        image: image ?? this.image,
+        deskripsi: deskripsi ?? this.deskripsi,
+        adalahKayuGelondongan:
+            adalahKayuGelondongan ?? this.adalahKayuGelondongan,
+        dimensi: dimensi ?? this.dimensi,
+        konfigurasi: konfigurasi ?? this.konfigurasi,
+        jenisKayu: jenisKayu ?? this.jenisKayu,
+        kualitas: kualitas ?? this.kualitas,
+        sertifikasiKeberlanjutan:
+            sertifikasiKeberlanjutan ?? this.sertifikasiKeberlanjutan,
+        stok: stok ?? this.stok,
+        category: category ?? this.category);
   }
 }

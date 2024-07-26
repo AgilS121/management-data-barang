@@ -65,7 +65,6 @@ class EditkayuView extends StatelessWidget {
                       price: int.parse(controller.priceController.text),
                       image: controller.imageUrls, // Gambar yang diupdate
                     ));
-                    Get.back(); // Kembali ke halaman sebelumnya setelah update
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.coklat7,

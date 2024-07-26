@@ -28,19 +28,44 @@ class CardKaryawanView extends StatelessWidget {
                 width: 100,
                 height: 100,
                 decoration: BoxDecoration(
-                  color: Colors.lightBlue[50],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Center(
-                  child: Text(
-                    '404',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue[800],
-                    ),
-                  ),
-                ),
+                child: karyawan.image!.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          karyawan.image!,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              color: Colors.lightBlue[50],
+                              child: Center(
+                                child: Text(
+                                  '404',
+                                  style: TextStyle(
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue[800],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    : Container(
+                        color: Colors.lightBlue[50],
+                        child: Center(
+                          child: Text(
+                            'No Image',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blue[800],
+                            ),
+                          ),
+                        ),
+                      ),
               ),
               SizedBox(width: 16),
               // Informasi produk

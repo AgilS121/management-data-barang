@@ -36,6 +36,7 @@ class AddkayuView extends GetView<DatakayuController> {
               _buildTextField('Stok', controller.stockController),
               _buildTextField('Kualitas', controller.qualityController),
               _buildTextField('Harga', controller.priceController),
+              _buildCategoryDropdown(),
               const SizedBox(height: 20),
               _buildSaveButton(),
             ],
@@ -88,6 +89,52 @@ class AddkayuView extends GetView<DatakayuController> {
         ),
       ),
     );
+  }
+
+  Widget _buildCategoryDropdown() {
+    return Obx(() {
+      final categories = controller.categories;
+      final selectedCategory = controller.selectedCategory.value;
+
+      // Memastikan selectedCategory selalu memiliki nilai yang valid.
+      if (categories.isNotEmpty && !categories.contains(selectedCategory)) {
+        controller.selectedCategory.value = categories.first;
+      }
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DropdownButtonFormField<String>(
+            value: controller.selectedCategory.value.isNotEmpty
+                ? controller.selectedCategory.value
+                : null, // Set to null if no category is selected
+            items: categories.map((category) {
+              return DropdownMenuItem<String>(
+                value: category,
+                child: Text(category),
+              );
+            }).toList(),
+            onChanged: (value) {
+              if (value == 'Tambah Kategori Baru') {
+                controller.isAddingNewCategory.value = true;
+                controller.newCategoryController.clear();
+                controller.selectedCategory.value = '';
+              } else {
+                controller.selectedCategory.value = value ?? '';
+                controller.isAddingNewCategory.value = false;
+              }
+            },
+            decoration: const InputDecoration(
+              labelText: 'Kategori',
+              border: OutlineInputBorder(),
+            ),
+          ),
+          const SizedBox(height: 16),
+          if (controller.isAddingNewCategory.value)
+            _buildTextField('Kategori Baru', controller.newCategoryController),
+        ],
+      );
+    });
   }
 
   Widget _buildSaveButton() {

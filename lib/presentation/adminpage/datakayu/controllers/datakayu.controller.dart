@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dekaybaro/domain/models/ProductModel.dart';
+import 'package:dekaybaro/domain/usecase/KategoriUseCase.dart';
 import 'package:dekaybaro/domain/usecase/ProductUseCase.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
@@ -9,20 +10,28 @@ import 'package:image_picker/image_picker.dart';
 class DatakayuController extends GetxController {
   final RxList<Product> cartItems = <Product>[].obs;
   final RxMap<int, int> quantities = <int, int>{}.obs;
+
   final AddProduct addProduct;
   final GetAllProducts getAllProducts;
   final UpdateProduct updateProduct;
   final DeleteProduct deleteProduct;
+  final AddCategory addCategoryUseCase;
+  final GetAllCategories getAllCategoriesUseCase;
 
   DatakayuController({
     required this.addProduct,
     required this.getAllProducts,
     required this.updateProduct,
     required this.deleteProduct,
+    required this.addCategoryUseCase,
+    required this.getAllCategoriesUseCase,
   });
 
   final RxBool isFavorite = false.obs;
-  final RxList<Product> product = <Product>[].obs;
+  final RxList<Product> products = <Product>[].obs;
+  final RxList<String> categories = <String>[].obs;
+  final RxBool isAddingNewCategory = false.obs;
+  final RxString selectedCategory = ''.obs;
 
   // TextEditingController untuk input field
   final TextEditingController nameController = TextEditingController();
@@ -30,8 +39,8 @@ class DatakayuController extends GetxController {
   final TextEditingController stockController = TextEditingController();
   final TextEditingController qualityController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
+  final TextEditingController newCategoryController = TextEditingController();
 
-  final products = <Product>[].obs;
   final isLoading = false.obs;
   final errorMessage = ''.obs;
   final RxList<XFile> imageFiles = <XFile>[].obs;
@@ -41,74 +50,64 @@ class DatakayuController extends GetxController {
   void onInit() {
     super.onInit();
     fetchAllProducts();
+    fetchCategories();
   }
 
-  Future<void> fetchAllProducts() async {
+  void fetchAllProducts() {
     isLoading.value = true;
-    final result = await getAllProducts();
+    errorMessage.value = '';
+
+    getAllProducts().listen((result) {
+      result.fold(
+        (exception) {
+          errorMessage.value = exception.toString();
+          isLoading.value = false;
+        },
+        (productList) {
+          products.value = productList;
+          isLoading.value = false;
+        },
+      );
+    }, onError: (error) {
+      errorMessage.value = error.toString();
+      isLoading.value = false;
+    });
+  }
+
+  Future<void> addNewProduct() async {
+    if (selectedCategory.value.isEmpty) {
+      errorMessage.value = 'Kategori harus dipilih atau ditambahkan';
+      return;
+    }
+
+    String category = selectedCategory.value;
+    if (isAddingNewCategory.value) {
+      category = newCategoryController.text;
+      await addCategory(category);
+    }
+
+    List<String> imageUrls = await _uploadImages();
+    Product newProduct = Product(
+      name: nameController.text,
+      price: int.parse(priceController.text),
+      image: imageUrls,
+      deskripsi: descriptionController.text,
+      stok: int.parse(stockController.text),
+      kualitas: qualityController.text,
+      category: category,
+    );
+
+    final result = await addProduct(newProduct);
     result.fold(
       (exception) {
         errorMessage.value = exception.toString();
       },
-      (productList) {
-        products.value = productList;
+      (product) {
+        products.add(product);
+        resetForm();
+        Get.back();
       },
     );
-    isLoading.value = false;
-  }
-
-  Future<void> addNewProduct() async {
-    print("Tombol simpan diklik");
-    isLoading.value = true;
-
-    List<String> imageUrls = [];
-    try {
-      for (var imageFile in imageFiles) {
-        String imageUrl = await uploadImageToStorage(imageFile);
-        print("URL gambar: $imageUrl");
-        imageUrls.add(imageUrl);
-      }
-    } catch (e) {
-      print("Gagal mengunggah gambar: $e");
-      errorMessage.value = 'Gagal mengunggah gambar: $e';
-      isLoading.value = false;
-      return;
-    }
-
-    try {
-      Product newProduct = Product(
-        name: nameController.text,
-        price: int.parse(priceController.text),
-        image: imageUrls,
-        deskripsi: descriptionController.text,
-        stok: int.parse(stockController.text),
-        kualitas: qualityController.text,
-        // ID tidak perlu diatur di sini, Firestore akan menghasilkannya
-      );
-
-      print("Data produk yang akan disimpan: ${newProduct.toJson()}");
-
-      final result = await addProduct(newProduct);
-      result.fold(
-        (exception) {
-          errorMessage.value = exception.toString();
-          print("Gagal menyimpan produk: ${errorMessage.value}");
-        },
-        (product) {
-          products.add(product);
-          print(
-              "Produk berhasil disimpan: ${product.name} dengan ID: ${product.id}");
-
-          resetForm();
-          Get.back();
-        },
-      );
-    } catch (e) {
-      print("Terjadi kesalahan saat menyimpan produk: $e");
-      errorMessage.value = 'Terjadi kesalahan saat menyimpan produk: $e';
-    } finally {
-      isLoading.value = false;
-    }
   }
 
   void resetForm() {
@@ -118,23 +117,19 @@ class DatakayuController extends GetxController {
     qualityController.clear();
     priceController.clear();
     imageFiles.clear();
+    selectedCategory.value = '';
+    isAddingNewCategory.value = false;
   }
 
   Future<void> updateExistingProduct(Product product) async {
     isLoading.value = true;
 
-    List<String> updatedImageUrls = [];
-
-    print("cek image 2 $imageUrls");
-
     try {
+      List<String> updatedImageUrls = [];
       if (imageFiles.isNotEmpty) {
-        for (var imageFile in imageFiles) {
-          String imageUrl = await uploadImageToStorage(imageFile);
-          updatedImageUrls.add(imageUrl);
-        }
+        updatedImageUrls = await _uploadImages();
       } else {
-        updatedImageUrls = imageUrls;
+        updatedImageUrls = product.image;
       }
 
       final updatedProduct = product.copyWith(
@@ -143,6 +138,7 @@ class DatakayuController extends GetxController {
         stok: int.parse(stockController.text),
         kualitas: qualityController.text,
         price: int.parse(priceController.text),
+        image: updatedImageUrls,
       );
 
       final result = await updateProduct(updatedProduct);
@@ -154,7 +150,10 @@ class DatakayuController extends GetxController {
           int index = products.indexWhere((p) => p.id == updatedProduct.id);
           if (index != -1) {
             products[index] = updatedProduct;
+            resetForm();
           }
+          resetForm();
+          Get.back();
         },
       );
     } catch (e) {
@@ -162,6 +161,42 @@ class DatakayuController extends GetxController {
     } finally {
       isLoading.value = false;
     }
+  }
+
+  void fetchCategories() {
+    getAllCategoriesUseCase().listen(
+      (result) {
+        result.fold(
+          (exception) => errorMessage.value = exception.toString(),
+          (fetchedCategories) {
+            categories.value = fetchedCategories;
+            if (!categories.contains('Tambah Kategori Baru')) {
+              categories.add('Tambah Kategori Baru');
+            }
+          },
+        );
+      },
+      onError: (error) {
+        errorMessage.value = error.toString();
+      },
+    );
+  }
+
+  Future<void> addCategory(String category) async {
+    final result = await addCategoryUseCase(category);
+    result.fold(
+      (exception) => errorMessage.value = exception.toString(),
+      (_) => fetchCategories(),
+    );
+  }
+
+  Future<List<String>> _uploadImages() async {
+    List<String> imageUrls = [];
+    for (var imageFile in imageFiles) {
+      String imageUrl = await uploadImageToStorage(imageFile);
+      imageUrls.add(imageUrl);
+    }
+    return imageUrls;
   }
 
   Future<String> uploadImageToStorage(XFile imageFile) async {
