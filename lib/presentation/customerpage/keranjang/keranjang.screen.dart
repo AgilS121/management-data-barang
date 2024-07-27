@@ -7,7 +7,6 @@ import 'package:dekaybaro/presentation/utils/views/reusable_text_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'controllers/keranjang.controller.dart';
 
 class KeranjangScreen
     extends GetView<ProductcardkeranjangcontrollerController> {
@@ -15,6 +14,9 @@ class KeranjangScreen
 
   @override
   Widget build(BuildContext context) {
+    final ProductcardkeranjangcontrollerController controller =
+        Get.put(ProductcardkeranjangcontrollerController());
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,

@@ -16,10 +16,22 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       UserCredential userCredential = await _firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
-      return UserEntity(
-          id: userCredential.user!.uid,
-          email: userCredential.user!.email!,
-          name: userCredential.user!.displayName ?? '');
+      User? user = userCredential.user;
+
+      if (user != null) {
+        String docId = email.replaceAll('.', '_');
+
+        DocumentSnapshot userDoc =
+            await _firestore.collection('users').doc(docId).get();
+        if (userDoc.exists) {
+          return UserEntity(
+              id: docId,
+              email: user.email!,
+              name: user.displayName ?? '',
+              role: 'customers');
+        }
+      }
+      return null;
     } catch (e) {
       print('Login error: $e');
       throw Exception('Failed to login: ${_handleAuthError(e)}');
@@ -27,7 +39,8 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<UserEntity?> registerWithEmail(String email, String password) async {
+  Future<UserEntity?> registerWithEmail(
+      String email, String password, String name) async {
     try {
       UserCredential userCredential = await _firebaseAuth
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -39,11 +52,15 @@ class AuthRepositoryImpl implements AuthRepository {
         await _firestore.collection('users').doc(docId).set({
           'uid': user.uid,
           'email': user.email,
-          'name': user.displayName ?? '',
+          'name': name,
+          'role': 'customers' // Default role
         });
 
         return UserEntity(
-            id: docId, email: user.email!, name: user.displayName ?? '');
+            id: docId,
+            email: user.email!,
+            name: name,
+            role: 'customers'); // Default role
       }
       return null;
     } catch (e) {
@@ -79,11 +96,16 @@ class AuthRepositoryImpl implements AuthRepository {
             'uid': user.uid,
             'email': user.email,
             'name': user.displayName ?? '',
+            'role': 'customers' // Default role
           });
         }
 
         return UserEntity(
-            id: docId, email: user.email!, name: user.displayName ?? '');
+            id: docId,
+            email: user.email!,
+            name: user.displayName ?? '',
+            role: userDoc['role'] ??
+                'customers'); // Assumes role is saved in Firestore
       }
       return null;
     } catch (e) {
