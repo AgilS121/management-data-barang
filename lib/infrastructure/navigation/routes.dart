@@ -1,7 +1,37 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class Routes {
   static Future<String> get initialRoute async {
-    // TODO: implement method
-    return ONBOARDING;
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      return ONBOARDING;
+    }
+
+    String role = await _getUserRole(user.uid);
+    return _getRouteBasedOnRole(role);
+  }
+
+  static Future<String> _getUserRole(String uid) async {
+    try {
+      DocumentSnapshot userDoc =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      return userDoc['role'] ?? 'customer';
+    } catch (e) {
+      print('Error getting user role: $e');
+      return 'customer'; // Default role
+    }
+  }
+
+  static String _getRouteBasedOnRole(String role) {
+    switch (role) {
+      case 'admin':
+        return HOMEADMIN;
+      // case 'employee':
+      //   return ;
+      default:
+        return HOMECUSTOMER;
+    }
   }
 
   static const ADDALAMAT = '/addalamat';

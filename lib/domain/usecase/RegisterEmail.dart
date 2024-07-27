@@ -6,7 +6,7 @@ class RegisterWithEmail {
 
   RegisterWithEmail(this.repository);
 
-  Future<UserEntity?> call(String email, String password) async {
-    return await repository.registerWithEmail(email, password);
+  Future<UserEntity?> call(String email, String password, String name) async {
+    return await repository.registerWithEmail(email, password, name);
   }
 }

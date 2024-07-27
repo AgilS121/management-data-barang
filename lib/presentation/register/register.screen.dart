@@ -120,7 +120,8 @@ class RegisterScreen extends GetView<RegisterController> {
                         try {
                           await controller.register(
                               controller.emailController.text,
-                              controller.passwordController.text);
+                              controller.passwordController.text,
+                              controller.nameController.text);
                           Get.snackbar('Success', 'Register successfully');
                           Get.toNamed("/login");
                         } catch (e) {
