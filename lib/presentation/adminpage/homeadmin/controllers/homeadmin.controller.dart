@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dekaybaro/domain/entities/UserEntitites.dart';
 import 'package:dekaybaro/domain/models/ProductModel.dart';
 import 'package:dekaybaro/domain/usecase/KategoriUseCase.dart';
 import 'package:dekaybaro/domain/usecase/ProductUseCase.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
 class HomeadminController extends GetxController {
@@ -20,12 +23,61 @@ class HomeadminController extends GetxController {
   final RxString errorMessage = ''.obs;
   final Rx<StockFilter> selectedStockFilter = StockFilter.all.obs;
   final RxInt maxStock = 0.obs;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Rx<UserEntity?> user = Rx<UserEntity?>(null);
+  RxString name = ''.obs;
+  RxString email = ''.obs;
+  RxString imageUrl = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
     _listenToCategories();
     _listenToProductChanges();
+    loadUserData();
+  }
+
+  String getGreeting() {
+    var hour = DateTime.now().hour;
+    if (hour < 5) {
+      return 'Selamat tengah malam';
+    } else if (hour < 12) {
+      return 'Selamat pagi';
+    } else if (hour < 15) {
+      return 'Selamat siang';
+    } else if (hour < 18) {
+      return 'Selamat sore';
+    } else {
+      return 'Selamat malam';
+    }
+  }
+
+  Future<void> loadUserData() async {
+    try {
+      User? currentUser = _auth.currentUser;
+      if (currentUser != null) {
+        String userId = currentUser.email ?? '';
+        DocumentSnapshot userDoc =
+            await _firestore.collection('users').doc(userId).get();
+        if (userDoc.exists) {
+          Map<String, dynamic> userData =
+              userDoc.data() as Map<String, dynamic>;
+          name.value = userData['name'] ?? 'No Name';
+          email.value = userData['email'] ?? 'No Email';
+          imageUrl.value = userData['imageUrl'] ?? '';
+          user.value = UserEntity(
+            id: userId,
+            email: email.value,
+            name: name.value,
+            role: userData['role'] ?? 'customers',
+          );
+        }
+      }
+    } catch (e) {
+      print('Error loading user data: $e');
+    }
   }
 
   void _listenToCategories() {

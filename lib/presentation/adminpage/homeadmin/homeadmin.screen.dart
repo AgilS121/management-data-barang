@@ -18,7 +18,12 @@ class HomeadminScreen extends GetView<HomeadminController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            WelcomeHeaderView(name: "Jack Admin"),
+            WelcomeHeaderView(
+              greeting: controller.getGreeting(),
+              name: controller.name.value.isNotEmpty
+                  ? controller.name.value
+                  : 'Admin',
+            ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(

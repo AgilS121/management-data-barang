@@ -6,8 +6,10 @@ import 'package:get/get.dart';
 
 class WelcomeHeaderView extends GetView {
   final String name;
+  final String? greeting;
 
-  const WelcomeHeaderView({Key? key, required this.name}) : super(key: key);
+  const WelcomeHeaderView({Key? key, required this.name, this.greeting})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class WelcomeHeaderView extends GetView {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           ReusableTextView(
-            text: "Selamat Datang, \n$name",
+            text: "$greeting, \n$name",
             sizetext: 22,
             textcolor: AppColors.coklat7,
             fontWeight: FontWeight.bold,

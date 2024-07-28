@@ -67,22 +67,42 @@ class ProfiladminScreen extends GetView<ProfiladminController> {
               SizedBox(height: 20),
               ListTile(
                 leading: Icon(Icons.attach_money_rounded),
-                title: Text('Pendapatan'),
+                title: ReusableTextView(
+                  text: "Pendapatan",
+                  sizetext: 14,
+                  textcolor: AppColors.blacktext,
+                  fontWeight: FontWeight.bold,
+                ),
                 onTap: () => Get.toNamed("/pendapatan"),
               ),
               ListTile(
                 leading: Icon(Icons.settings),
-                title: Text('Pengaturan'),
+                title: ReusableTextView(
+                  text: "Pengaturan",
+                  sizetext: 14,
+                  textcolor: AppColors.blacktext,
+                  fontWeight: FontWeight.bold,
+                ),
                 onTap: () => Get.toNamed("/pengaturancustomer"),
               ),
               ListTile(
                 leading: Icon(Icons.info),
-                title: Text('Info'),
+                title: ReusableTextView(
+                  text: "Info",
+                  sizetext: 14,
+                  textcolor: AppColors.blacktext,
+                  fontWeight: FontWeight.bold,
+                ),
                 onTap: () => Get.toNamed("/tentangaplikasi"),
               ),
               ListTile(
                 leading: Icon(Icons.logout),
-                title: Text('Keluar'),
+                title: ReusableTextView(
+                  text: "Keluar",
+                  sizetext: 14,
+                  textcolor: AppColors.blacktext,
+                  fontWeight: FontWeight.bold,
+                ),
                 onTap: () {
                   controller.signOut();
                   Get.offAllNamed("/login");
