@@ -19,13 +19,12 @@ class AuthRepositoryImpl implements AuthRepository {
       User? user = userCredential.user;
 
       if (user != null) {
-        String docId = email.replaceAll('.', '_');
-
         DocumentSnapshot userDoc =
-            await _firestore.collection('users').doc(docId).get();
+            await _firestore.collection('users').doc(email).get();
+        print("get data login ${userDoc}");
         if (userDoc.exists) {
           return UserEntity(
-              id: docId,
+              id: email,
               email: user.email!,
               name: user.displayName ?? '',
               role: 'customers');
@@ -47,9 +46,7 @@ class AuthRepositoryImpl implements AuthRepository {
       User? user = userCredential.user;
 
       if (user != null) {
-        String docId = email.replaceAll('.', '_');
-
-        await _firestore.collection('users').doc(docId).set({
+        await _firestore.collection('users').doc(email).set({
           'uid': user.uid,
           'email': user.email,
           'name': name,
@@ -57,7 +54,7 @@ class AuthRepositoryImpl implements AuthRepository {
         });
 
         return UserEntity(
-            id: docId,
+            id: email,
             email: user.email!,
             name: name,
             role: 'customers'); // Default role
