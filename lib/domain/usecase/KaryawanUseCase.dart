@@ -1,8 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dekaybaro/domain/models/KaryawanModel.dart';
-import 'package:dekaybaro/domain/models/ProductModel.dart';
 import 'package:dekaybaro/domain/repositories/KaryawanRepositories.dart';
-import 'package:dekaybaro/domain/repositories/ProductRepositories.dart';
 
 class AddKaryawan {
   final KaryawanRepositories repository;
