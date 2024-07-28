@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dekaybaro/domain/entities/StockFilter.dart';
 import 'package:dekaybaro/domain/entities/UserEntitites.dart';
 import 'package:dekaybaro/domain/models/ProductModel.dart';
 import 'package:dekaybaro/domain/usecase/KategoriUseCase.dart';
@@ -159,11 +160,4 @@ class HomeadminController extends GetxController {
     selectedStockFilter.value = filter;
     filterProductsByCategoryAndStock();
   }
-}
-
-enum StockFilter {
-  all,
-  zeroToMax,
-  maxToZero,
-  onlyZero,
 }

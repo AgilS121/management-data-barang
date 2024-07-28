@@ -1,3 +1,4 @@
+import 'package:dekaybaro/domain/entities/StockFilter.dart';
 import 'package:dekaybaro/infrastructure/theme/colors.dart';
 import 'package:dekaybaro/presentation/utils/componentadmins/views/custom_bottom_navbar_admin_view.dart';
 import 'package:dekaybaro/presentation/utils/componentadmins/views/stock_product_card_view.dart';

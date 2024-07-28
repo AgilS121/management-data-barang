@@ -1,5 +1,4 @@
 import 'package:dekaybaro/infrastructure/theme/colors.dart';
-import 'package:dekaybaro/presentation/customerpage/homecustomer/homecustomer.screen.dart';
 import 'package:dekaybaro/presentation/utils/componentcustomers/views/custom_bottom_nav_bar_view.dart';
 import 'package:dekaybaro/presentation/utils/componentcustomers/views/product_card_view.dart';
 import 'package:dekaybaro/presentation/utils/componentcustomers/views/search_bar_view.dart';
@@ -28,7 +27,6 @@ class BelanjaScreen extends GetView<BelanjaController> {
       body: Column(
         children: [
           SearchBarView(),
-          CategoryTabs(),
           Padding(
             padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0),
             child: Row(
