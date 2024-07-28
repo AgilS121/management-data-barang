@@ -25,112 +25,94 @@ class PendapatanScreen extends GetView<PendapatanController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Text('Bulan / JT', style: TextStyle(fontSize: 16)),
-            //     DropdownButton<String>(
-            //       value: controller.selectedFilter.value,
-            //       items: [
-            //         DropdownMenuItem(
-            //             value: 'weekly', child: Text('Per Minggu')),
-            //         DropdownMenuItem(
-            //             value: 'monthly', child: Text('Per Bulan')),
-            //         DropdownMenuItem(value: 'yearly', child: Text('Per Tahun')),
-            //       ],
-            //       onChanged: (value) {
-            //         if (value != null) {
-            //           controller.setFilter(value);
-            //         }
-            //       },
-            //     ),
-            //   ],
-            // ),
-            // SizedBox(height: 16),
+            // Filter Dropdown
             Obx(() {
-              return Column(
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Filter:', style: TextStyle(fontSize: 16)),
-                      DropdownButton<String>(
-                        value: controller.selectedFilter.value,
-                        items: [
-                          DropdownMenuItem(
-                              value: 'daily', child: Text('Harian')),
-                          DropdownMenuItem(
-                              value: 'monthly', child: Text('Bulanan')),
-                          DropdownMenuItem(
-                              value: 'yearly', child: Text('Tahunan')),
-                        ],
-                        onChanged: (value) {
-                          if (value != null) {
-                            controller.setFilter(value);
-                          }
-                        },
-                      ),
+                  Text('Filter:', style: TextStyle(fontSize: 16)),
+                  DropdownButton<String>(
+                    value: controller.selectedFilter.value,
+                    items: [
+                      DropdownMenuItem(value: 'daily', child: Text('Harian')),
+                      DropdownMenuItem(
+                          value: 'monthly', child: Text('Bulanan')),
+                      DropdownMenuItem(value: 'yearly', child: Text('Tahunan')),
                     ],
-                  ),
-                  SizedBox(height: 16),
-                  SizedBox(
-                    height: 300,
-                    child: BarChart(
-                      BarChartData(
-                        barGroups:
-                            controller.chartData.asMap().entries.map((entry) {
-                          int index = entry.key;
-                          ChartData data = entry.value;
-                          return BarChartGroupData(
-                            x: index,
-                            barRods: [
-                              BarChartRodData(
-                                toY: data.value,
-                                color: Colors.brown,
-                                width: 16,
-                              ),
-                            ],
-                          );
-                        }).toList(),
-                        titlesData: FlTitlesData(
-                          bottomTitles: AxisTitles(
-                            sideTitles: SideTitles(
-                              showTitles: true,
-                              getTitlesWidget: (value, meta) {
-                                int index = value.toInt();
-                                if (index >= 0 &&
-                                    index < controller.chartData.length) {
-                                  return SideTitleWidget(
-                                    axisSide: meta.axisSide,
-                                    child: Text(
-                                      controller.chartData[index].date,
-                                      style: TextStyle(fontSize: 10),
-                                    ),
-                                  );
-                                }
-                                return SideTitleWidget(
-                                  axisSide: meta.axisSide,
-                                  child: Text(''),
-                                );
-                              },
-                            ),
-                          ),
-                          leftTitles: AxisTitles(
-                              sideTitles: SideTitles(showTitles: false)),
-                          topTitles: AxisTitles(
-                              sideTitles: SideTitles(showTitles: false)),
-                          rightTitles: AxisTitles(
-                              sideTitles: SideTitles(showTitles: false)),
-                        ),
-                        borderData: FlBorderData(show: false),
-                        gridData: FlGridData(show: false),
-                      ),
-                    ),
+                    onChanged: (value) {
+                      if (value != null) {
+                        controller.setFilter(value);
+                      }
+                    },
                   ),
                 ],
               );
             }),
+            SizedBox(height: 16),
+
+            // Bar Chart
+            Obx(() {
+              return SizedBox(
+                height: 300,
+                child: BarChart(
+                  BarChartData(
+                    barGroups:
+                        controller.chartData.asMap().entries.map((entry) {
+                      int index = entry.key;
+                      ChartData data = entry.value;
+                      return BarChartGroupData(
+                        x: index,
+                        barRods: [
+                          BarChartRodData(
+                            toY: data.value,
+                            color: Colors.brown,
+                            width: 16,
+                          ),
+                        ],
+                      );
+                    }).toList(),
+                    titlesData: FlTitlesData(
+                      bottomTitles: AxisTitles(
+                        sideTitles: SideTitles(
+                          showTitles: true,
+                          getTitlesWidget: (value, meta) {
+                            int index = value.toInt();
+                            if (index >= 0 &&
+                                index < controller.chartData.length) {
+                              return SideTitleWidget(
+                                axisSide: meta.axisSide,
+                                child: Text(
+                                  controller.chartData[index].date,
+                                  style: TextStyle(fontSize: 10),
+                                ),
+                              );
+                            }
+                            return SideTitleWidget(
+                              axisSide: meta.axisSide,
+                              child: Text(''),
+                            );
+                          },
+                        ),
+                      ),
+                      leftTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      topTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                      rightTitles: AxisTitles(
+                        sideTitles: SideTitles(showTitles: false),
+                      ),
+                    ),
+                    borderData: FlBorderData(show: false),
+                    gridData: FlGridData(show: false),
+                  ),
+                ),
+              );
+            }),
             SizedBox(height: 32),
+
+            // Daily Income List (Example)
             Text('Pemasukan Harian', style: TextStyle(fontSize: 18)),
             Card(
               child: ListTile(
@@ -139,19 +121,28 @@ class PendapatanScreen extends GetView<PendapatanController> {
                 trailing: Text(
                   '+700.000',
                   style: TextStyle(
-                      color: Colors.green, fontWeight: FontWeight.bold),
+                    color: Colors.green,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
             Spacer(),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: IconButton(
-                icon: Icon(Icons.download),
-                onPressed: () {
-                  // Handle download action
-                },
-              ),
+
+            // Download Buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  child: Text('Download CSV'),
+                  onPressed: () => controller.downloadCsvReport(),
+                ),
+                SizedBox(width: 16),
+                ElevatedButton(
+                  child: Text('Download PDF'),
+                  onPressed: () => controller.downloadPdfReport(),
+                ),
+              ],
             ),
           ],
         ),

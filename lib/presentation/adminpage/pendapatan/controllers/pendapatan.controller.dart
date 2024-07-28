@@ -1,9 +1,23 @@
 import 'package:dekaybaro/domain/models/ChartData.dart';
+import 'package:dekaybaro/domain/models/PendapatanModel.dart';
+import 'package:dekaybaro/domain/usecase/PendapatanUseCase.dart';
 import 'package:get/get.dart';
+import 'package:open_file/open_file.dart';
 
 class PendapatanController extends GetxController {
+  final GetRevenueData getRevenueData;
+  final GenerateCsvReport generateCsvReport;
+  final GeneratePdfReport generatePdfReport;
+
+  PendapatanController({
+    required this.getRevenueData,
+    required this.generateCsvReport,
+    required this.generatePdfReport,
+  });
+
   var selectedFilter = 'daily'.obs;
   var chartData = <ChartData>[].obs;
+  var revenueData = <RevenueData>[].obs;
 
   @override
   void onInit() {
@@ -16,39 +30,24 @@ class PendapatanController extends GetxController {
     fetchData();
   }
 
-  void fetchData() {
-    // Simulasi data fetch berdasarkan filter
-    switch (selectedFilter.value) {
-      case 'daily':
-        chartData.value = [
-          ChartData(date: '1 Jul', value: 50),
-          ChartData(date: '2 Jul', value: 55),
-          ChartData(date: '3 Jul', value: 60),
-          ChartData(date: '4 Jul', value: 52),
-          ChartData(date: '5 Jul', value: 58),
-          ChartData(date: '6 Jul', value: 65),
-          ChartData(date: '7 Jul', value: 62),
-        ];
-        break;
-      case 'monthly':
-        chartData.value = [
-          ChartData(date: 'Jan', value: 300),
-          ChartData(date: 'Feb', value: 280),
-          ChartData(date: 'Mar', value: 310),
-          ChartData(date: 'Apr', value: 290),
-          ChartData(date: 'May', value: 320),
-          ChartData(date: 'Jun', value: 350),
-        ];
-        break;
-      case 'yearly':
-        chartData.value = [
-          ChartData(date: '2019', value: 3500),
-          ChartData(date: '2020', value: 3200),
-          ChartData(date: '2021', value: 3800),
-          ChartData(date: '2022', value: 4000),
-          ChartData(date: '2023', value: 4200),
-        ];
-        break;
-    }
+  Future<void> fetchData() async {
+    revenueData.value = await getRevenueData(selectedFilter.value);
+    updateChartData();
+  }
+
+  void updateChartData() {
+    chartData.value = revenueData
+        .map((item) => ChartData(date: item.date, value: item.amount))
+        .toList();
+  }
+
+  Future<void> downloadCsvReport() async {
+    String filePath = await generateCsvReport(revenueData);
+    OpenFile.open(filePath);
+  }
+
+  Future<void> downloadPdfReport() async {
+    String filePath = await generatePdfReport(revenueData);
+    OpenFile.open(filePath);
   }
 }
