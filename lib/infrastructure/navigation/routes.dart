@@ -8,14 +8,15 @@ class Routes {
       return ONBOARDING;
     }
 
-    String role = await _getUserRole(user.uid);
+    String role = await _getUserRole(user.email!);
+    print("data role $role");
     return _getRouteBasedOnRole(role);
   }
 
-  static Future<String> _getUserRole(String uid) async {
+  static Future<String> _getUserRole(String email) async {
     try {
       DocumentSnapshot userDoc =
-          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+          await FirebaseFirestore.instance.collection('users').doc(email).get();
       return userDoc['role'] ?? 'customer';
     } catch (e) {
       print('Error getting user role: $e');
