@@ -1,11 +1,10 @@
-import 'package:dekaybaro/presentation/customerpage/homecustomer/controllers/homecustomer.controller.dart';
+import 'package:dekaybaro/presentation/customerpage/belanja/controllers/belanja.controller.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-class SearchBarView extends GetView<HomecustomerController> {
-  const SearchBarView({Key? key}) : super(key: key);
-
+class SearchBarBelanjaView extends GetView<BelanjaController> {
+  const SearchBarBelanjaView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Padding(

@@ -1,5 +1,7 @@
 import 'package:dekaybaro/presentation/adminpage/datakaryawan/views/addkaryawan_view.dart';
 import 'package:dekaybaro/presentation/adminpage/datakayu/views/addkayu_view.dart';
+import 'package:dekaybaro/presentation/utils/componentcustomers/views/search_bar_belanja_view.dart';
+import 'package:dekaybaro/presentation/utils/componentcustomers/views/search_bar_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -69,6 +71,11 @@ class Nav {
       binding: HomecustomerControllerBinding(),
     ),
     GetPage(
+      name: Routes.SEARCHVIEW,
+      page: () => const SearchBarView(),
+      binding: HomecustomerControllerBinding(),
+    ),
+    GetPage(
       name: Routes.SEMUA_PRODUCT,
       page: () => const SemuaProductScreen(),
       binding: SemuaProductControllerBinding(),
@@ -76,6 +83,11 @@ class Nav {
     GetPage(
       name: Routes.BELANJA,
       page: () => const BelanjaScreen(),
+      binding: BelanjaControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.SEARCHVIEWBELANJA,
+      page: () => const SearchBarBelanjaView(),
       binding: BelanjaControllerBinding(),
     ),
     GetPage(

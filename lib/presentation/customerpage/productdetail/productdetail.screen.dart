@@ -12,12 +12,15 @@ class ProductdetailScreen extends GetView<ProductdetailController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: ReusableTextView(
-          text: controller.product.name,
-          sizetext: 20,
-          textcolor: AppColors.blacktext,
-          fontWeight: FontWeight.bold,
-        ),
+        title: Obx(() {
+          final productName = controller.product.value.name;
+          return ReusableTextView(
+            text: productName.isEmpty ? 'Produk Tidak Ditemukan' : productName,
+            sizetext: 20,
+            textcolor: AppColors.blacktext,
+            fontWeight: FontWeight.bold,
+          );
+        }),
         actions: [
           Obx(() => IconButton(
                 icon: Icon(
@@ -64,96 +67,94 @@ class ProductdetailScreen extends GetView<ProductdetailController> {
               )),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(0.0),
+      body: Obx(() {
+        final product = controller.product.value;
+
+        if (product.name.isEmpty) {
+          return Center(child: Text('Produk tidak ditemukan'));
+        }
+        return SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Obx(() => Column(
-                    children: [
-                      Container(
-                        height: 300.h,
-                        width: double.infinity,
-                        child: PageView.builder(
-                          onPageChanged: controller.selectImage,
-                          itemCount: controller.product.image.length,
-                          itemBuilder: (context, index) {
-                            return Image.network(
-                              controller.product.image[index],
-                              fit: BoxFit.cover,
-                            );
+              Container(
+                height: 300,
+                width: double.infinity,
+                child: PageView.builder(
+                  onPageChanged: controller.selectImage,
+                  itemCount: product.image.length,
+                  itemBuilder: (context, index) {
+                    return Image.network(
+                      product.image[index],
+                      fit: BoxFit.cover,
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  product.image.length,
+                  (index) => GestureDetector(
+                    onTap: () => controller.selectImage(index),
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 4.0),
+                      padding: EdgeInsets.all(4.0),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        border: Border.all(
+                          color: controller.selectedImageIndex.value == index
+                              ? Colors.brown
+                              : Colors.grey,
+                        ),
+                        borderRadius: BorderRadius.circular(8.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.2),
+                            spreadRadius: 1,
+                            blurRadius: 5,
+                            offset: Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8.0),
+                        child: Image.network(
+                          product.image[index],
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(Icons.error);
                           },
                         ),
                       ),
-                      SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                          controller.product.image.length,
-                          (index) => GestureDetector(
-                            onTap: () => controller.selectImage(index),
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: 4.0),
-                              padding: EdgeInsets.all(4.0),
-                              decoration: BoxDecoration(
-                                color: Colors
-                                    .white, // Background color for better shadow effect
-                                border: Border.all(
-                                  color: controller.selectedImageIndex.value ==
-                                          index
-                                      ? Colors.brown
-                                      : Colors.grey,
-                                ),
-                                borderRadius:
-                                    BorderRadius.circular(8.0), // Rounded edges
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black
-                                        .withOpacity(0.2), // Shadow color
-                                    spreadRadius: 1, // Spread radius
-                                    blurRadius: 5, // Blur radius
-                                    offset: Offset(
-                                        0, 3), // Offset in x and y direction
-                                  ),
-                                ],
-                              ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(
-                                    8.0), // Ensure image corners match container
-                                child: Image.network(
-                                  controller.product.image[index],
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(height: 24),
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ReusableTextView(
-                          text: controller.product.name,
-                          sizetext: 18,
-                          textcolor: AppColors.blacktext,
-                          fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: ReusableTextView(
+                            text: product.name,
+                            sizetext: 18,
+                            textcolor: AppColors.blacktext,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                        SizedBox(height: 8),
                         ReusableTextView(
-                          text: controller.product.adalahKayuGelondongan!
-                              ? 'Rp ${controller.product.price.toString()} / m³'
-                              : 'Rp ${controller.product.price.toString()}',
+                          text: product.adalahKayuGelondongan ?? false
+                              ? 'Rp ${product.price.toString()} / m³'
+                              : 'Rp ${product.price.toString()}',
                           sizetext: 18,
                           textcolor: AppColors.blacktext,
                           fontWeight: FontWeight.bold,
@@ -169,8 +170,7 @@ class ProductdetailScreen extends GetView<ProductdetailController> {
                     ),
                     SizedBox(height: 8),
                     ReusableTextView(
-                        text: controller.product.deskripsi ??
-                            "Tidak ada deskripsi",
+                        text: product.deskripsi ?? "Tidak ada deskripsi",
                         sizetext: 14,
                         textcolor: AppColors.greytext),
                     SizedBox(height: 16),
@@ -181,17 +181,18 @@ class ProductdetailScreen extends GetView<ProductdetailController> {
                       fontWeight: FontWeight.bold,
                     ),
                     ReusableTextView(
-                        text: ' ${controller.product.jenisKayu}',
+                        text: product.jenisKayu ?? 'Tidak tersedia',
                         sizetext: 18,
                         textcolor: AppColors.greytext),
+                    SizedBox(height: 8),
                     ReusableTextView(
-                      text: 'Jenis Kayu:',
+                      text: 'Kualitas Kayu:',
                       sizetext: 18,
                       textcolor: AppColors.blacktext,
                       fontWeight: FontWeight.bold,
                     ),
                     ReusableTextView(
-                        text: '${controller.product.kualitas}',
+                        text: product.kualitas ?? 'Tidak tersedia',
                         sizetext: 18,
                         textcolor: AppColors.greytext),
                     SizedBox(height: 24),
@@ -203,59 +204,74 @@ class ProductdetailScreen extends GetView<ProductdetailController> {
                             borderRadius: BorderRadius.circular(8),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 1,
-                                blurRadius: 3,
-                                offset: Offset(0, 1),
+                                color: Colors.black.withOpacity(0.1),
+                                blurRadius: 5,
+                                offset: Offset(0, 2),
                               ),
                             ],
                           ),
-                          child: Obx(() => IconButton(
-                                icon: controller.isAddingToCart.value
-                                    ? CircularProgressIndicator(
-                                        valueColor:
-                                            AlwaysStoppedAnimation<Color>(
-                                                Colors.black),
-                                      )
-                                    : Icon(Icons.shopping_cart,
-                                        color: Colors.black),
-                                onPressed: controller.isAddingToCart.value
-                                    ? null
-                                    : controller.addToCart,
-                              )),
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(Icons.remove),
+                                onPressed: () {
+                                  if (controller.quantity.value > 1) {
+                                    controller.quantity.value--;
+                                  }
+                                },
+                              ),
+                              Obx(
+                                () => Text(
+                                  controller.quantity.value.toString(),
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              IconButton(
+                                icon: Icon(Icons.add),
+                                onPressed: () {
+                                  controller.quantity.value++;
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                         SizedBox(width: 16),
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
-                              // Logika untuk beli sekarang
-                            },
-                            child: Text(
-                              'Beli Sekarang',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            onPressed: controller.isAddingToCart.value
+                                ? null
+                                : () async {
+                                    await controller.addToCart();
+                                  },
+                            child: controller.isAddingToCart.value
+                                ? CircularProgressIndicator(
+                                    valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.white),
+                                  )
+                                : ReusableTextView(
+                                    text: "Tambah ke Keranjang",
+                                    sizetext: 14,
+                                    textcolor: AppColors.whiteColor),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black,
-                              foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(vertical: 16),
+                              backgroundColor: AppColors.coklat7,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
+                              padding: EdgeInsets.symmetric(vertical: 16),
                             ),
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

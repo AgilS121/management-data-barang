@@ -62,4 +62,6 @@ class Routes {
   static const ADDKAYU = '/addkayu';
   static const ADDKARYAWAN = '/addkaryawan';
   static const EDITKARYAWAN = '/editkaryawan';
+  static const SEARCHVIEW = '/search';
+  static const SEARCHVIEWBELANJA = '/search-belanja';
 }

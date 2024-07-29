@@ -22,9 +22,7 @@ class SemuaProductScreen extends GetView<SemuaProductController> {
         ),
         centerTitle: true,
       ),
-      body: Expanded(
-        child: ProductGridAll(),
-      ),
+      body: ProductGridAll(),
       bottomNavigationBar: CustomBottomNavBar(),
     );
   }
@@ -33,18 +31,31 @@ class SemuaProductScreen extends GetView<SemuaProductController> {
 class ProductGridAll extends GetView<SemuaProductController> {
   @override
   Widget build(BuildContext context) {
-    return Obx(() => GridView.builder(
-          padding: EdgeInsets.all(16.0),
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            childAspectRatio: 0.75,
-            crossAxisSpacing: 16.0,
-            mainAxisSpacing: 16.0,
+    return Obx(() {
+      print(
+          "Building grid with ${controller.filteredProducts.length} products");
+      if (controller.filteredProducts.isEmpty) {
+        return Center(
+          child: Text(
+            'Tidak ada produk untuk ditampilkan',
+            style: TextStyle(fontSize: 16),
           ),
-          itemCount: controller.products.length,
-          itemBuilder: (context, index) {
-            return ProductCardView(product: controller.products[index]);
-          },
-        ));
+        );
+      }
+
+      return GridView.builder(
+        padding: const EdgeInsets.all(16.0),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.75,
+          crossAxisSpacing: 16.0,
+          mainAxisSpacing: 16.0,
+        ),
+        itemCount: controller.filteredProducts.length,
+        itemBuilder: (context, index) {
+          return ProductCardView(product: controller.filteredProducts[index]);
+        },
+      );
+    });
   }
 }

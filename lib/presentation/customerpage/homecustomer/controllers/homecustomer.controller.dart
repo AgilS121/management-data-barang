@@ -32,6 +32,7 @@ class HomecustomerController extends GetxController {
   RxString name = ''.obs;
   RxString email = ''.obs;
   RxString imageUrl = ''.obs;
+  final RxString searchQuery = ''.obs;
 
   @override
   void onInit() {
@@ -106,7 +107,7 @@ class HomecustomerController extends GetxController {
           allProducts.value = productList;
           maxStock.value = _getMaxStock(productList);
           print("data maks stok ${maxStock.value}");
-          filterProductsByCategoryAndStock();
+          filterProductsByCategoryStockAndSearch();
         },
       );
     });
@@ -161,17 +162,21 @@ class HomecustomerController extends GetxController {
   void updateVisibleCategories() {
     final Set<String> categoriesWithProducts = allProducts
         .map((product) => product.category)
-        .where((category) => category != null)
+        .where((category) => category != null && category.isNotEmpty)
         .cast<String>()
         .toSet();
 
-    categories.value = [
-      'Semua',
-      ...categories
-          .where((category) => categoriesWithProducts.contains(category))
-    ];
+    // Include 'Semua' and only categories that have products
+    categories.value = ['Semua', ...categoriesWithProducts];
 
-    filterProductsByCategoryAndStock();
+    // If the selected category is not visible anymore, select 'Semua'
+    if (selectedCategoryIndex.value > 0 &&
+        !categoriesWithProducts
+            .contains(categories[selectedCategoryIndex.value])) {
+      selectedCategoryIndex.value = 0;
+    }
+
+    filterProductsByCategoryStockAndSearch();
   }
 
   void selectCategory(int index) {
@@ -182,5 +187,54 @@ class HomecustomerController extends GetxController {
   void selectStockFilter(StockFilter filter) {
     selectedStockFilter.value = filter;
     filterProductsByCategoryAndStock();
+  }
+
+  void filterProductsByCategoryStockAndSearch() {
+    List<Product> filtered = [];
+
+    if (selectedCategoryIndex.value == 0) {
+      filtered = allProducts;
+    } else {
+      final selectedCategory = categories[selectedCategoryIndex.value];
+      filtered = allProducts.where((product) {
+        return product.category == selectedCategory;
+      }).toList();
+    }
+
+    filtered = filtered.where((product) {
+      final matchesSearchQuery = searchQuery.value.isEmpty ||
+          product.name.toLowerCase().contains(searchQuery.value.toLowerCase());
+      final matchesStockFilter = _applyStockFilter(product);
+
+      return matchesSearchQuery && matchesStockFilter;
+    }).toList();
+
+    filteredProducts.value = filtered;
+
+    if (selectedStockFilter.value == StockFilter.zeroToMax) {
+      filteredProducts.sort((a, b) => a.stok!.compareTo(b.stok!));
+    } else if (selectedStockFilter.value == StockFilter.maxToZero) {
+      filteredProducts.sort((a, b) => b.stok!.compareTo(a.stok!));
+    }
+
+    print("Filtered products count: ${filteredProducts.length}");
+  }
+
+  bool _applyStockFilter(Product product) {
+    switch (selectedStockFilter.value) {
+      case StockFilter.zeroToMax:
+        return true;
+      case StockFilter.maxToZero:
+        return true;
+      case StockFilter.onlyZero:
+        return product.stok == 0;
+      default:
+        return true;
+    }
+  }
+
+  void updateSearchQuery(String query) {
+    searchQuery.value = query;
+    filterProductsByCategoryStockAndSearch();
   }
 }
