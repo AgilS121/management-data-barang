@@ -36,7 +36,7 @@ class ProductdetailScreen extends GetView<ProductdetailController> {
                   IconButton(
                     icon: Icon(Icons.shopping_cart),
                     onPressed: () {
-                      // Navigate to cart screen
+                      Get.toNamed('/keranjang');
                     },
                   ),
                   if (controller.cartItemCount.value > 0)

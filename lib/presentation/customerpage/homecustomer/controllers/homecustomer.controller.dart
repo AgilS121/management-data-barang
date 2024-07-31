@@ -29,9 +29,6 @@ class HomecustomerController extends GetxController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Rx<UserEntity?> user = Rx<UserEntity?>(null);
-  RxString name = ''.obs;
-  RxString email = ''.obs;
-  RxString imageUrl = ''.obs;
   final RxString searchQuery = ''.obs;
 
   @override
@@ -57,7 +54,18 @@ class HomecustomerController extends GetxController {
     }
   }
 
+  void filterCategories() {
+    final Set<String> categoriesWithProducts = allProducts
+        .map((product) => product.category)
+        .where((category) => category != null && category.isNotEmpty)
+        .cast<String>()
+        .toSet();
+
+    categories.value = ['Semua', ...categoriesWithProducts];
+  }
+
   Future<void> loadUserData() async {
+    isLoading.value = true;
     try {
       User? currentUser = _auth.currentUser;
       if (currentUser != null) {
@@ -67,21 +75,22 @@ class HomecustomerController extends GetxController {
         if (userDoc.exists) {
           Map<String, dynamic> userData =
               userDoc.data() as Map<String, dynamic>;
-          name.value = userData['name'] ?? 'No Name';
-          email.value = userData['email'] ?? 'No Email';
-          imageUrl.value = userData['imageUrl'] ?? '';
           user.value = UserEntity(
             id: userId,
-            email: email.value,
-            name: name.value,
+            email: userData['email'] ?? 'No Email',
+            name: userData['name'] ?? 'No Name',
             role: userData['role'] ?? 'customers',
           );
         }
       }
     } catch (e) {
       print('Error loading user data: $e');
+    } finally {
+      isLoading.value = false;
     }
   }
+
+  String get userName => user.value?.name ?? 'User';
 
   void _listenToCategories() {
     getAllCategories().listen((result) {
@@ -106,7 +115,7 @@ class HomecustomerController extends GetxController {
         (productList) {
           allProducts.value = productList;
           maxStock.value = _getMaxStock(productList);
-          print("data maks stok ${maxStock.value}");
+          filterCategories(); // Tambahkan ini
           filterProductsByCategoryStockAndSearch();
         },
       );
@@ -181,7 +190,7 @@ class HomecustomerController extends GetxController {
 
   void selectCategory(int index) {
     selectedCategoryIndex.value = index;
-    filterProductsByCategoryAndStock();
+    filterProductsByCategoryStockAndSearch();
   }
 
   void selectStockFilter(StockFilter filter) {
@@ -216,6 +225,8 @@ class HomecustomerController extends GetxController {
     } else if (selectedStockFilter.value == StockFilter.maxToZero) {
       filteredProducts.sort((a, b) => b.stok!.compareTo(a.stok!));
     }
+
+    filterCategories(); // Tambahkan ini untuk memastikan kategori selalu diperbarui
 
     print("Filtered products count: ${filteredProducts.length}");
   }

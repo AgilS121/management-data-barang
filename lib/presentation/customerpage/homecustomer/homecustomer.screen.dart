@@ -22,9 +22,7 @@ class HomecustomerScreen extends GetView<HomecustomerController> {
           children: [
             WelcomeHeaderView(
               greeting: controller.getGreeting(),
-              name: controller.name.value.isNotEmpty
-                  ? controller.name.value
-                  : 'User 1',
+              name: controller.userName,
             ),
             SearchBarView(),
             Padding(

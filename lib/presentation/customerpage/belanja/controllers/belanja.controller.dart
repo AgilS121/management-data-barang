@@ -54,11 +54,21 @@ class BelanjaController extends GetxController {
         (productList) {
           allProducts.value = productList;
           maxStock.value = _getMaxStock(productList);
-          print("data maks stok ${maxStock.value}");
+          filterCategories(); // Tambahkan ini
           filterProductsByCategoryStockAndSearch();
         },
       );
     });
+  }
+
+  void filterCategories() {
+    final Set<String> categoriesWithProducts = allProducts
+        .map((product) => product.category)
+        .where((category) => category != null && category.isNotEmpty)
+        .cast<String>()
+        .toSet();
+
+    categories.value = ['Semua', ...categoriesWithProducts];
   }
 
   int _getMaxStock(List<Product> products) {
@@ -129,7 +139,7 @@ class BelanjaController extends GetxController {
 
   void selectCategory(int index) {
     selectedCategoryIndex.value = index;
-    filterProductsByCategoryAndStock();
+    filterProductsByCategoryStockAndSearch();
   }
 
   void selectStockFilter(StockFilter filter) {
@@ -164,6 +174,8 @@ class BelanjaController extends GetxController {
     } else if (selectedStockFilter.value == StockFilter.maxToZero) {
       filteredProducts.sort((a, b) => b.stok!.compareTo(a.stok!));
     }
+
+    filterCategories(); // Tambahkan ini untuk memastikan kategori selalu diperbarui
 
     print("Filtered products count: ${filteredProducts.length}");
   }

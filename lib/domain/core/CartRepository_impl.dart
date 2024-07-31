@@ -6,31 +6,51 @@ class CartRepositoryImpl extends CartRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
-  Future<List<Product>> getCartItems() async {
-    try {
-      final querySnapshot = await _firestore.collection('cart').get();
-      return querySnapshot.docs.map((doc) {
+  Stream<List<Product>> getCartItemsStream() {
+    return _firestore.collection('cart').snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
         final data = doc.data();
         return Product(
           id: doc.id,
           name: data['name'],
           price: data['price'],
           image: List<String>.from(data['image']),
+          stok: data['quantity'],
         );
       }).toList();
-    } catch (e) {
-      throw Exception('Failed to load cart items');
-    }
+    });
   }
 
   @override
-  Future<void> addToCart(Product product, int quantity) async {
+  Stream<List<Product>> getCartItemsStreamwhereuser(String userEmail) {
+    return _firestore
+        .collection('cart')
+        .where('pembeli', isEqualTo: userEmail)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        return Product(
+          id: doc.id,
+          name: data['name'],
+          price: data['price'],
+          image: List<String>.from(data['image']),
+          stok: data['quantity'],
+        );
+      }).toList();
+    });
+  }
+
+  @override
+  Future<void> addToCart(
+      Product product, int quantity, String emailpembeli) async {
     try {
       await _firestore.collection('cart').doc(product.id).set({
         'name': product.name,
         'price': product.price,
         'image': product.image,
         'quantity': quantity,
+        'pembeli': emailpembeli
       });
     } catch (e) {
       throw Exception('Failed to add product to cart');

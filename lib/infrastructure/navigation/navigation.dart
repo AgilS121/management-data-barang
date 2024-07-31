@@ -112,7 +112,7 @@ class Nav {
     ),
     GetPage(
       name: Routes.ADDALAMAT,
-      page: () => const AddalamatScreen(),
+      page: () => AddalamatScreen(),
       binding: AddalamatControllerBinding(),
     ),
     GetPage(
