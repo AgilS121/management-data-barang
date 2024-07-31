@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 
 class ProductcardkeranjangcontrollerController extends GetxController {
   final RxList<Product> cartItems = <Product>[].obs;
-  final RxMap<int, int> quantities = <int, int>{}.obs;
+  final RxMap<String, int> quantities = <String, int>{}.obs;
   final RxInt paymentStep = 0.obs;
   final RxInt ongkir = 0.obs;
   var localAddress = ''.obs;
@@ -11,27 +11,13 @@ class ProductcardkeranjangcontrollerController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // Contoh data
-    cartItems.addAll([
-      Product(id: "1", name: 'Kayu Alba', price: 900000, image: [
-        'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png',
-        'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png'
-      ]),
-      Product(id: "2", name: 'Kayu Jati', price: 1500000, image: [
-        'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png',
-        'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png'
-      ]),
-      Product(id: "3", name: 'Kayu Jati', price: 1500000, image: [
-        'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png',
-        'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png'
-      ]),
-      Product(id: "4", name: 'Kayu Jati', price: 1500000, image: [
-        'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png',
-        'https://static-00.iconduck.com/assets.00/9-404-error-illustration-2048x908-vp03fkyu.png'
-      ]),
-    ]);
-    for (var item in cartItems) {
-      quantities[int.parse(item.id!)] = 1;
+    // Inisialisasi dengan data keranjang yang diteruskan dari layar sebelumnya
+    var args = Get.arguments;
+    if (args != null && args is List<Product>) {
+      cartItems.assignAll(args);
+      for (var item in cartItems) {
+        quantities[item.id!] = item.stok ?? 1;
+      }
     }
   }
 
@@ -40,27 +26,27 @@ class ProductcardkeranjangcontrollerController extends GetxController {
   int get total => subTotal + ongkir.value;
 
   void increaseQuantity(Product product) {
-    quantities[int.parse(product.id!)] =
-        (quantities[int.parse(product.id!)] ?? 0) + 1;
+    quantities[product.id!] = (quantities[product.id!] ?? 0) + 1;
+    update();
   }
 
   void decreaseQuantity(Product product) {
-    if ((quantities[int.parse(product.id!)] ?? 0) > 0) {
-      quantities[int.parse(product.id!)] =
-          quantities[int.parse(product.id!)]! - 1;
-      if (quantities[int.parse(product.id!)] == 0) {
-        removeItem(product);
-      }
+    if ((quantities[product.id!] ?? 0) > 1) {
+      quantities[product.id!] = quantities[product.id!]! - 1;
+    } else {
+      removeItem(product);
     }
+    update();
   }
 
   void removeItem(Product product) {
     cartItems.remove(product);
-    quantities.remove(int.parse(product.id!));
+    quantities.remove(product.id!);
+    update();
   }
 
   int getQuantity(Product product) {
-    return quantities[int.parse(product.id!)] ?? 0;
+    return quantities[product.id!] ?? 0;
   }
 
   void nextStep() {
@@ -72,7 +58,7 @@ class ProductcardkeranjangcontrollerController extends GetxController {
   }
 
   void calculateOngkir(String address) {
-    // Calculate ongkir based on address
-    ongkir.value = 55000; // Example value
+    // Hitung ongkir berdasarkan alamat
+    ongkir.value = 55000; // Nilai contoh
   }
 }

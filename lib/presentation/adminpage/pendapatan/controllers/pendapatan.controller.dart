@@ -31,23 +31,40 @@ class PendapatanController extends GetxController {
   }
 
   Future<void> fetchData() async {
-    revenueData.value = await getRevenueData(selectedFilter.value);
-    updateChartData();
+    print("Fetching data with filter: ${selectedFilter.value}");
+    try {
+      revenueData.value = await getRevenueData(selectedFilter.value);
+      print("Data fetched: ${revenueData.length} records found.");
+      updateChartData();
+    } catch (e) {
+      print("Error fetching data: $e");
+    }
   }
 
   void updateChartData() {
     chartData.value = revenueData
         .map((item) => ChartData(date: item.date, value: item.amount))
         .toList();
+    print("Chart data updated: ${chartData.length} records.");
   }
 
   Future<void> downloadCsvReport() async {
-    String filePath = await generateCsvReport(revenueData);
-    OpenFile.open(filePath);
+    try {
+      String filePath = await generateCsvReport(revenueData);
+      print("CSV report generated at: $filePath");
+      OpenFile.open(filePath);
+    } catch (e) {
+      print("Error generating CSV report: $e");
+    }
   }
 
   Future<void> downloadPdfReport() async {
-    String filePath = await generatePdfReport(revenueData);
-    OpenFile.open(filePath);
+    try {
+      String filePath = await generatePdfReport(revenueData);
+      print("PDF report generated at: $filePath");
+      OpenFile.open(filePath);
+    } catch (e) {
+      print("Error generating PDF report: $e");
+    }
   }
 }

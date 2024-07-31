@@ -12,6 +12,7 @@ class Product {
   final String? sertifikasiKeberlanjutan;
   final int? stok;
   final String? category;
+  final String? email;
 
   Product(
       {this.id,
@@ -26,7 +27,8 @@ class Product {
       this.kualitas,
       this.sertifikasiKeberlanjutan,
       this.stok = 0,
-      this.category});
+      this.category,
+      this.email});
 
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
@@ -46,7 +48,8 @@ class Product {
         kualitas: json['kualitas'],
         sertifikasiKeberlanjutan: json['sertifikasiKeberlanjutan'],
         stok: json['stok'],
-        category: json['category']);
+        category: json['category'],
+        email: json['email']);
   }
 
   Map<String, dynamic> toJson() {
@@ -63,7 +66,8 @@ class Product {
       'kualitas': kualitas,
       'sertifikasiKeberlanjutan': sertifikasiKeberlanjutan,
       'stok': stok,
-      'category': category
+      'category': category,
+      'email': email
     };
   }
 
@@ -80,7 +84,8 @@ class Product {
       String? kualitas,
       String? sertifikasiKeberlanjutan,
       int? stok,
-      String? category}) {
+      String? category,
+      String? email}) {
     return Product(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -96,6 +101,7 @@ class Product {
         sertifikasiKeberlanjutan:
             sertifikasiKeberlanjutan ?? this.sertifikasiKeberlanjutan,
         stok: stok ?? this.stok,
-        category: category ?? this.category);
+        category: category ?? this.category,
+        email: email ?? this.email);
   }
 }

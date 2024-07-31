@@ -1,13 +1,23 @@
 import 'package:dekaybaro/domain/models/ProductModel.dart';
 import 'package:dekaybaro/domain/repositories/CartRepositories.dart';
 
-class GetCartItems {
+class GetCartItemsStream {
   final CartRepository repository;
 
-  GetCartItems(this.repository);
+  GetCartItemsStream(this.repository);
 
-  Future<List<Product>> call() {
-    return repository.getCartItems();
+  Stream<List<Product>> call() {
+    return repository.getCartItemsStream();
+  }
+}
+
+class GetCartItemsStreamwhereuser {
+  final CartRepository repository;
+
+  GetCartItemsStreamwhereuser(this.repository);
+
+  Stream<List<Product>> call(String userEmail) {
+    return repository.getCartItemsStreamwhereuser(userEmail);
   }
 }
 
@@ -16,8 +26,8 @@ class AddToCart {
 
   AddToCart(this.repository);
 
-  Future<void> call(Product product, int quantity) {
-    return repository.addToCart(product, quantity);
+  Future<void> call(Product product, int quantity, String emailpembeli) {
+    return repository.addToCart(product, quantity, emailpembeli);
   }
 }
 

@@ -114,19 +114,25 @@ class PendapatanScreen extends GetView<PendapatanController> {
 
             // Daily Income List (Example)
             Text('Pemasukan Harian', style: TextStyle(fontSize: 18)),
-            Card(
-              child: ListTile(
-                title: Text('Kayu Alba'),
-                subtitle: Text('14 July 2021'),
-                trailing: Text(
-                  '+700.000',
-                  style: TextStyle(
-                    color: Colors.green,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
+            Obx(() {
+              return Column(
+                children: controller.revenueData.map((data) {
+                  return Card(
+                    child: ListTile(
+                      title: Text(data.productName),
+                      subtitle: Text(data.date),
+                      trailing: Text(
+                        '+${data.amount}',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              );
+            }),
             Spacer(),
 
             // Download Buttons
