@@ -15,6 +15,11 @@ export 'package:dekaybaro/presentation/customerpage/pengaturancustomer/pengatura
 export 'package:dekaybaro/presentation/customerpage/productdetail/productdetail.screen.dart';
 export 'package:dekaybaro/presentation/customerpage/semuaProduct/semua_product.screen.dart';
 export 'package:dekaybaro/presentation/home/home.screen.dart';
+export 'package:dekaybaro/presentation/karyawanpage/detailpesanan/detailpesanan.screen.dart';
+export 'package:dekaybaro/presentation/karyawanpage/homekaryawan/homekaryawan.screen.dart';
+export 'package:dekaybaro/presentation/karyawanpage/productdetailkaryawan/productdetailkaryawan.screen.dart';
+export 'package:dekaybaro/presentation/karyawanpage/profilekaryawan/profilekaryawan.screen.dart';
+export 'package:dekaybaro/presentation/karyawanpage/stokkayu/stokkayu.screen.dart';
 export 'package:dekaybaro/presentation/login/login.screen.dart';
 export 'package:dekaybaro/presentation/lupasandi/lupasandi.screen.dart';
 export 'package:dekaybaro/presentation/onboarding/onboarding.screen.dart';

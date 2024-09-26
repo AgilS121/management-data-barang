@@ -58,8 +58,8 @@ class LoginController extends GetxController {
         case 'admin':
           Get.offAllNamed('/homeadmin');
           break;
-        case 'employee':
-          Get.offAllNamed('/homeemployee');
+        case 'karyawan':
+          Get.offAllNamed('/homekaryawan');
           break;
         default:
           Get.offAllNamed('/homecustomer');

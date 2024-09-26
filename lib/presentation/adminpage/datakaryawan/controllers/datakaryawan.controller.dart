@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dekaybaro/domain/models/KaryawanModel.dart';
 import 'package:dekaybaro/domain/usecase/KaryawanUseCase.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -9,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 
 class DatakaryawanController extends GetxController {
   final RxList<KaryawanModel> karyawanItems = <KaryawanModel>[].obs;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final AddKaryawan addKaryawan;
   final GetAllKaryawan getAllKaryawan;
@@ -33,6 +35,7 @@ class DatakaryawanController extends GetxController {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController salaryController = TextEditingController();
   final TextEditingController bioController = TextEditingController();
+  final passwordController = TextEditingController();
 
   final isLoading = false.obs;
   final errorMessage = ''.obs;
@@ -77,8 +80,14 @@ class DatakaryawanController extends GetxController {
     }
 
     try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
       KaryawanModel newKaryawan = KaryawanModel(
-        id: '', // Assign an ID if required
+        id: userCredential.user!.uid,
         name: nameController.text,
         position: positionController.text,
         image: imageUrls.isNotEmpty ? imageUrls[0] : '',

@@ -1,8 +1,8 @@
+import 'package:dekaybaro/infrastructure/theme/colors.dart';
 import 'package:dekaybaro/presentation/adminpage/datakaryawan/controllers/datakaryawan.controller.dart';
 import 'package:dekaybaro/presentation/utils/views/reusable_text_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:dekaybaro/infrastructure/theme/colors.dart';
 
 class AddkaryawanView extends GetView<DatakaryawanController> {
   const AddkaryawanView({Key? key}) : super(key: key);
@@ -53,6 +53,8 @@ class AddkaryawanView extends GetView<DatakaryawanController> {
               buildTextField('Status', controller.statusController),
               buildTextField('Gaji', controller.salaryController),
               buildTextField('Bio', controller.bioController, maxLines: 3),
+              buildTextField('Password', controller.passwordController,
+                  obscureText: true), // Add password field
               SizedBox(height: 20),
               Container(
                 width: double.infinity,
@@ -80,11 +82,12 @@ class AddkaryawanView extends GetView<DatakaryawanController> {
   }
 
   Widget buildTextField(String label, TextEditingController controller,
-      {int maxLines = 1}) {
+      {bool obscureText = false, int maxLines = 1}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextField(
         controller: controller,
+        obscureText: obscureText,
         maxLines: maxLines,
         decoration: InputDecoration(
           labelText: label,

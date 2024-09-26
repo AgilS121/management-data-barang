@@ -11,34 +11,41 @@ class Purchase {
   final double ongkir;
   final double total;
   final String date;
+  final bool? sudahtransfer;
+  String? userName;
+  String? image;
 
-  Purchase({
-    this.id,
-    required this.userId,
-    required this.products,
-    required this.address,
-    required this.paymentMethod,
-    required this.subTotal,
-    required this.ongkir,
-    required this.total,
-    required this.date,
-  });
+  Purchase(
+      {this.id,
+      required this.userId,
+      required this.products,
+      required this.address,
+      required this.paymentMethod,
+      required this.subTotal,
+      required this.ongkir,
+      required this.total,
+      required this.date,
+      this.sudahtransfer = false,
+      this.userName,
+      this.image});
 
   factory Purchase.fromSnapshot(DocumentSnapshot snapshot) {
     final data = snapshot.data() as Map<String, dynamic>;
     return Purchase(
-      id: snapshot.id,
-      userId: data['userId'],
-      products: (data['products'] as List)
-          .map((productJson) => Product.fromJson(productJson))
-          .toList(),
-      address: data['address'],
-      paymentMethod: data['paymentMethod'],
-      subTotal: (data['subTotal'] as num).toDouble(),
-      ongkir: (data['ongkir'] as num).toDouble(),
-      total: (data['total'] as num).toDouble(),
-      date: data['date'],
-    );
+        id: snapshot.id,
+        userId: data['userId'],
+        products: (data['products'] as List)
+            .map((productJson) => Product.fromJson(productJson))
+            .toList(),
+        address: data['address'],
+        paymentMethod: data['paymentMethod'],
+        subTotal: (data['subTotal'] as num).toDouble(),
+        ongkir: (data['ongkir'] as num).toDouble(),
+        total: (data['total'] as num).toDouble(),
+        date: data['date'],
+        sudahtransfer: data['sudahtransfer'],
+        userName: data['userName'],
+        image: data['image']);
   }
 
   // Convert the Purchase object to JSON
@@ -52,6 +59,9 @@ class Purchase {
       'ongkir': ongkir,
       'total': total,
       'date': date,
+      'sudahtransfer': sudahtransfer,
+      'userName': userName,
+      'image': image
     };
   }
 }

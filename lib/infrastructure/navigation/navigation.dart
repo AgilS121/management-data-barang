@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+
+import 'package:get/get.dart';
+
 import 'package:dekaybaro/presentation/adminpage/datakaryawan/views/addkaryawan_view.dart';
 import 'package:dekaybaro/presentation/adminpage/datakayu/views/addkayu_view.dart';
 import 'package:dekaybaro/presentation/utils/componentcustomers/views/search_bar_belanja_view.dart';
 import 'package:dekaybaro/presentation/utils/componentcustomers/views/search_bar_view.dart';
-import 'package:flutter/material.dart';
-
-import 'package:get/get.dart';
 
 import '../../config.dart';
 import '../../presentation/screens.dart';
@@ -169,6 +170,31 @@ class Nav {
       name: Routes.PENDAPATAN,
       page: () => const PendapatanScreen(),
       binding: PendapatanControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.HOMEKARYAWAN,
+      page: () => const HomekaryawanScreen(),
+      binding: HomekaryawanControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.STOKKAYU,
+      page: () => const StokkayuScreen(),
+      binding: StokkayuControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.DETAILPESANAN,
+      page: () => const DetailpesananScreen(),
+      binding: DetailpesananControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PROFILEKARYAWAN,
+      page: () => const ProfilekaryawanScreen(),
+      binding: ProfilekaryawanControllerBinding(),
+    ),
+    GetPage(
+      name: Routes.PRODUCTDETAILKARYAWAN,
+      page: () => const ProductdetailkaryawanScreen(),
+      binding: ProductdetailkaryawanControllerBinding(),
     ),
   ];
 }
